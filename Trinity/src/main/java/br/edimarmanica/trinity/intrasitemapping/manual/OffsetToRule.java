@@ -39,11 +39,11 @@ import org.apache.commons.csv.CSVRecord;
  */
 public class OffsetToRule {
 
-    public static final String[] header = {"URL", "EXTRACTED VALUE"};
-    private Site site;
-    private Map<String, Map<String, Integer>> mappings = new HashMap<>(); //<Offset,<Attribute, Group>>
+    public static final String[] HEADER = {"URL", "EXTRACTED VALUE"};
+    private final Site site;
+    private final Map<String, Map<String, Integer>> mappings = new HashMap<>(); //<Offset,<Attribute, Group>>
     private boolean append = false;
-    private Set<String> pages = new HashSet<>();
+    private final Set<String> pages = new HashSet<>();
 
     public OffsetToRule(Site site) {
         this.site = site;
@@ -134,7 +134,7 @@ public class OffsetToRule {
             if (append) {
                 format = CSVFormat.EXCEL;
             } else {
-                format = CSVFormat.EXCEL.withHeader(header);
+                format = CSVFormat.EXCEL.withHeader(HEADER);
             }
 
             try (Writer out = new FileWriter(file, append)) {
@@ -158,7 +158,7 @@ public class OffsetToRule {
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
 
-                    if (site != br.edimarmanica.dataset.weir.book.Site.BOOKMOOCH) {
+                    if (site != br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL) {
                         continue;
                     }
                     try {

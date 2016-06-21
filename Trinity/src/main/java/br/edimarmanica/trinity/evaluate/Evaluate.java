@@ -10,7 +10,6 @@ import br.edimarmanica.dataset.Dataset;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
 import br.edimarmanica.metrics.GroundTruth;
-import br.edimarmanica.metrics.Labels;
 import br.edimarmanica.metrics.Printer;
 import br.edimarmanica.metrics.Results;
 import br.edimarmanica.metrics.RuleMetrics;
@@ -26,7 +25,7 @@ import java.util.Set;
  */
 public class Evaluate {
 
-    private Site site;
+    private final Site site;
     private Map<String, Map<String, String>> myResults = new HashMap<>();//<RuleName,Map<PageID,Value>>
     private Printer printer;
 
@@ -100,7 +99,7 @@ public class Evaluate {
 
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
-                    if (site != br.edimarmanica.dataset.weir.book.Site.BOOKMOOCH) {
+                    if (site != br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL) {
                         continue;
                     }
 

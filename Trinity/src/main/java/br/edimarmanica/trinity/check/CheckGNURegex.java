@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import tdg.cedar.tokeniser.Token;
@@ -91,7 +89,7 @@ public class CheckGNURegex {
     }
 
     public static void main(String[] args) {
-        String dir = "/media/Dados/doutorado04/bases/WEIR/book/bookmooch.com/";
+        String dir = "/media/edimar/Dados/doutorado04/bases/WEIR/book/bookmooch.com/";
         String[] pages = {"0001049305.html", "0001049313.html", "0004140273.html",
             "0001049321.html", "0001049356.html", "0001049410.html", "0001049429.html"};
         CheckGNURegex cr = new CheckGNURegex(dir, pages);

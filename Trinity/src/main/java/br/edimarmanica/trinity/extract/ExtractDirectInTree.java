@@ -55,7 +55,7 @@ public class ExtractDirectInTree extends Extract {
         Set<String> pages = new HashSet<>(); //Set<Page>
         for (Node leaf : leaves) { //Para cada nodo folha
             Map<String, String> pageValues = new HashMap<>(); //Map<Page, Value>
-            if (leaf.getSharedText() == null && leaf.size() > 0) { //se tem algum valor
+            if (leaf.getSharedText() == null && leaf.size() > 0 && leaf.hasVariability()) { //se tem algum valor e não é sempre o mesmo
                 for (Text text : leaf) { //para cada valor (suporta atributos multivalorados)
                     if (!pageValues.containsKey(text.getFile().getName())) { //o métrics trabalha com um valor de atributo por página e o trinity pegaria multiattributos. Então aqui vou pegar um só valor por atributo por página
                         pageValues.put(text.getFile().getName(), text.toString());
@@ -90,7 +90,7 @@ public class ExtractDirectInTree extends Extract {
     public static void main(String[] args) {
         //configurar essa opção (-Xss40m) da VM para não dar stackoverflow 
         General.DEBUG = true;
-        Extract.WINDOW_SIZE = 10;
+        Extract.WINDOW_SIZE = 6;
         Domain domain = br.edimarmanica.dataset.weir.Domain.SOCCER;
         for (Site site : domain.getSites()) {
 

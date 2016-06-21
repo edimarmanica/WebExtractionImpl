@@ -73,9 +73,9 @@ public class CheckTree {
 
     public static void main(String[] args) {
         Site site = br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL;
-        String[] pages = {"ricardo-oliveira.html", "dejan-stankovic.html", "luigi-di-biagio.html", "roberto-carlos.html", "jose-chamot.html", "andreas-herzog.html"};
-      //  String[] pages = {"ricardo-oliveira.html", "andreas-herzog.html"};
-
+        //String[] pages = {"ricardo-oliveira.html", "dejan-stankovic.html", "luigi-di-biagio.html", "roberto-carlos.html", "jose-chamot.html", "andreas-herzog.html"};
+        String[] pages = {"abel-xavier.html", "albert-ferrer.html", "abdoulaye-cisse.html", "albert-luque.html", "aiyegbeni-yakubu.html", "adrian-ilie.html"};
+      
         CheckTree cr = new CheckTree(site, pages);
         try {
             cr.execute();

@@ -3,6 +3,7 @@ package br.edimarmanica.trinity.extract;
 import br.edimarmanica.configuration.General;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Site;
+import br.edimarmanica.trinity.util.FileUtils;
 import gnu.regexp.REException;
 import java.io.File;
 import java.io.FileWriter;
@@ -172,6 +173,11 @@ public abstract class Extract {
          */
         File dir = new File(Paths.PATH_TRINITY + site.getPath() + "/offset");
         dir.mkdirs();
+
+        if (!append && offset == 0) {
+            FileUtils.deleteDir(dir);
+            dir.mkdirs();
+        }
 
         File file = new File(dir.getAbsolutePath() + "/result_" + offset + ".csv");
         CSVFormat format = CSVFormat.EXCEL;

@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this license HEADER, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -30,8 +30,8 @@ import org.apache.commons.csv.CSVPrinter;
  */
 public class AllMappings {
 
-    private Site site;
-    public static final String[] header = {"ATTRIBUTE", "OFFSET", "GROUP"};
+    private final Site site;
+    public static final String[] HEADER = {"ATTRIBUTE", "OFFSET", "GROUP"};
     private boolean append = false;
 
     public AllMappings(Site site) {
@@ -71,7 +71,7 @@ public class AllMappings {
         if (append) {
             format = CSVFormat.EXCEL;
         } else {
-            format = CSVFormat.EXCEL.withHeader(header);
+            format = CSVFormat.EXCEL.withHeader(HEADER);
         }
 
         try (Writer out = new FileWriter(file, append)) {
@@ -92,7 +92,7 @@ public class AllMappings {
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
 
-                    if (site != br.edimarmanica.dataset.weir.book.Site.BOOKMOOCH) {
+                    if (site != br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL) {
                         continue;
                     }
                     try {
