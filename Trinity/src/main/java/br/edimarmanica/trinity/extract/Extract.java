@@ -41,9 +41,9 @@ import tdg.tex.Text;
  */
 public abstract class Extract {
 
-    private Site site;
+    private final Site site;
     private Tokeniser tokeniser;
-    private Node root = new Node();
+    private Node root;
     public static final int VALUE_MAX_LENGHT = 150; //um valor com mais caracteres é descartado
     public static final int NR_SHARED_PAGES = 5;  //número de páginas usadas no treinamento e execução em todas as iterações
     public static int WINDOW_SIZE = 100; //número de elementos usados em cada iteração
@@ -121,7 +121,7 @@ public abstract class Extract {
 
     protected abstract void execute(File file, int offset) throws IOException;
 
-    private void execute(int offset) throws IOException, REException {
+    protected void execute(int offset) throws IOException, REException {
         int start = ((WINDOW_SIZE - NR_SHARED_PAGES) * offset) + NR_SHARED_PAGES;
         int end = start + WINDOW_SIZE - NR_SHARED_PAGES;
 
@@ -160,6 +160,7 @@ public abstract class Extract {
 
         for (int i = 0; (((WINDOW_SIZE - NR_SHARED_PAGES) * (i)) + NR_SHARED_PAGES) <= nrPages; i++) {
             append = false;
+            root = new Node();
             train(i);
             execute(i);
         }
@@ -183,5 +184,9 @@ public abstract class Extract {
             Logger.getLogger(Extract.class.getName()).log(Level.SEVERE, null, ex);
         }
         append = true;
+    }
+
+    public Node getRoot() {
+        return root;
     }
 }
