@@ -42,8 +42,9 @@ public class GroundTruthWeir extends GroundTruth{
                     if (!record.isMapped(attribute.getAttributeIDbyDataset())) {
                         throw new SiteWithoutThisAttribute(attribute.getAttributeID(), site.getFolderName());
                     }
-                    if (!record.get(attribute.getAttributeIDbyDataset()).trim().isEmpty()) {
-                        groundTruth.put(Formatter.formatURL(record.get("url")), Formatter.formatValue(record.get(attribute.getAttributeIDbyDataset())));
+                    String value = Formatter.formatValue(record.get(attribute.getAttributeIDbyDataset()));
+                    if (!value.isEmpty()) {
+                        groundTruth.put(Formatter.formatURL(record.get("url")), value);
                     }
                 }
             }
