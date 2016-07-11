@@ -20,7 +20,7 @@ public class Formatter {
                 .replaceAll("\\s+", " ")
                 .replaceAll("<[^>]*>", "") //removing tags
                 .replaceAll("\\&[^;]*;", "")//removing html entities
-                .replaceAll("[^(a-zA-Z)|\\d|\\.]", ""); //só deixa números, letras e o ponto
+                .replaceAll("[^(a-zA-Z)\\d\\.]", ""); //só deixa números, letras e o ponto
     }
     
     public static String formatURL(String url){
