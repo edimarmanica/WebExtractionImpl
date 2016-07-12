@@ -6,8 +6,10 @@
 package br.edimarmanica.trinity.extract;
 
 import br.edimarmanica.configuration.General;
+import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
+import br.edimarmanica.trinity.extract.timeout.ExtractTimeout;
 import gnu.regexp.REException;
 import java.io.File;
 import java.io.IOException;
@@ -91,6 +93,8 @@ public class ExtractDirectInTree extends Extract {
         //configurar essa opção (-Xss40m) da VM para não dar stackoverflow 
         General.DEBUG = true;
         Extract.WINDOW_SIZE = 6;
+        Paths.PATH_TRINITY = Paths.PATH_TRINITY+"/ved_w"+(Extract.WINDOW_SIZE - Extract.NR_SHARED_PAGES);
+        
         Domain domain = br.edimarmanica.dataset.weir.Domain.SOCCER;
         for (Site site : domain.getSites()) {
 

@@ -1,8 +1,10 @@
 package br.edimarmanica.trinity.extract.timeout;
 
 import br.edimarmanica.configuration.General;
+import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
+import br.edimarmanica.trinity.extract.Extract;
 import gnu.regexp.REException;
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +51,8 @@ public class ExtractTimeout extends br.edimarmanica.trinity.extract.ExtractPatte
     public static void main(String[] args) {
         //configurar essa opção (-Xss40m) da VM para não dar stackoverflow 
         General.DEBUG = true;
+        Extract.WINDOW_SIZE = 6;
+        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/vet_w" + (Extract.WINDOW_SIZE - Extract.NR_SHARED_PAGES);
 
         Domain domain = br.edimarmanica.dataset.swde.Domain.NBA_PLAYER;
         for (Site site : domain.getSites()) {
