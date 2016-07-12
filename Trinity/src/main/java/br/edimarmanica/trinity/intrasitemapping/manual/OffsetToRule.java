@@ -155,10 +155,14 @@ public class OffsetToRule {
         for (Dataset dataset : Dataset.values()) {
             System.out.println("Dataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
+
+                if (domain != br.edimarmanica.dataset.swde.Domain.BOOK) {
+                    continue;
+                }
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
 
-                    if (site != br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL) {
+                    if (site != br.edimarmanica.dataset.swde.book.Site.ADEBOOKS) {
                         continue;
                     }
                     try {

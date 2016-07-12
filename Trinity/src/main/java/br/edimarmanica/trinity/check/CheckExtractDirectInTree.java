@@ -82,15 +82,14 @@ public class CheckExtractDirectInTree {
     }
 
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.weir.book.Site.AMAZON;
-
+        Site site = br.edimarmanica.dataset.weir.book.Site.BOOKDEPOSITORY;
         String[] pages = {
-            "0001049682.html",
-            "0002201127.html",
-            "0001050427.html",
-            "0001050214.html",
-            "0002201089.html",
-            "0002201003.html"
+            "0002200370.html",
+            "0002200288.html",
+            "0002201667.html",
+            "0002200776.html",
+            "0002201650.html",
+            "0004140285.html"
         };
 
         CheckExtractDirectInTree cr = new CheckExtractDirectInTree(site, pages);

@@ -7,12 +7,9 @@ package br.edimarmanica.trinity.check;
 
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Site;
-import gnu.regexp.RE;
 import gnu.regexp.REException;
-import gnu.regexp.REMatch;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,10 +69,18 @@ public class CheckTree {
     }
 
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL;
-        //String[] pages = {"ricardo-oliveira.html", "dejan-stankovic.html", "luigi-di-biagio.html", "roberto-carlos.html", "jose-chamot.html", "andreas-herzog.html"};
-        String[] pages = {"abel-xavier.html", "albert-ferrer.html", "abdoulaye-cisse.html", "albert-luque.html", "aiyegbeni-yakubu.html", "adrian-ilie.html"};
-      
+
+        Site site = br.edimarmanica.dataset.swde.movie.Site.YAHOO;
+
+        String[] pages = {
+            "1138.htm",
+            "1267.htm",
+            "0981.htm",
+            "0835.htm",
+            "1972.htm",
+            "0300.htm"
+        };
+        
         CheckTree cr = new CheckTree(site, pages);
         try {
             cr.execute();

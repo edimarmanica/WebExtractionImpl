@@ -12,6 +12,8 @@
 public class Teste {
 
     public static void main(String[] args) {
+        String st = "Comedy|Cri25me|Dra,ma|Thr.il$ler";
+        System.out.println(st.replaceAll("[^(a-zA-Z)\\d\\.]", ""));
         System.out.println("aki");
 
     }

@@ -28,23 +28,22 @@ public class AbrirNavegador {
     public static void openPages(Site site, String[] pages) {
         String urls = "";
         for (String page : pages) {
-            urls += Paths.PATH_BASE+"/"+site.getPath()+"/"+page + " ";
+            urls += Paths.PATH_BASE + "/" + site.getPath() + "/" + page + " ";
 
         }
         openPage(urls);
     }
 
     public static void main(String[] args) {
-
-        Site site = br.edimarmanica.dataset.weir.book.Site.AMAZON;
+        Site site = br.edimarmanica.dataset.swde.movie.Site.ALLMOVIE;
 
         String[] pages = {
-            "0001049682.html",
-            "0002201127.html",
-            "0001050427.html",
-            "0001050214.html",
-            "0002201089.html",
-            "0002201003.html"
+            "1138.htm",
+            "1267.htm",
+            "0981.htm",
+            "0835.htm",
+            "1972.htm",
+            "0919.htm"
         };
 
         openPages(site, pages);

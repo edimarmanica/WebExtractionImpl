@@ -93,15 +93,15 @@ public class Evaluate {
         for (Dataset dataset : Dataset.values()) {
             System.out.println("\tDataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
-                /*if (domain != br.edimarmanica.dataset.weir.Domain.VIDEOGAME) {
+                if (domain != br.edimarmanica.dataset.swde.Domain.BOOK) {
                     continue;
-                }*/
+                }
 
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
-                    if (site != br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL) {
+                    /*if (site != br.edimarmanica.dataset.swde.movie.Site.AMCTV) {
                         continue;
-                    }
+                    }*/
 
                     try {
                         System.out.println("\t\tSite: " + site);

@@ -90,9 +90,14 @@ public class AllMappings {
             System.out.println("Dataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
                 System.out.println("\tDomain: " + domain);
+                
+                if (domain != br.edimarmanica.dataset.swde.Domain.BOOK){
+                    continue;
+                }
+                
                 for (Site site : domain.getSites()) {
 
-                    if (site != br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL) {
+                    if (site != br.edimarmanica.dataset.swde.book.Site.ADEBOOKS) {
                         continue;
                     }
                     try {
