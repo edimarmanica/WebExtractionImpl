@@ -10,13 +10,16 @@ import br.edimarmanica.dataset.Attribute;
 import br.edimarmanica.dataset.Dataset;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
+import br.edimarmanica.metrics.GroundTruth;
 import br.edimarmanica.metrics.Printer;
+import br.edimarmanica.metrics.SiteWithoutThisAttribute;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -38,16 +41,49 @@ public class AllMappings {
         this.site = site;
     }
 
-    public void execute() {
-        File dir = new File(Paths.PATH_TRINITY + site.getPath() + "/offset");
+    /**
+     *
+     * @return Map<Attribute, Map<PageURL, ExpectedValue>>
+     */
+    private Map<Attribute, Map<String, String>> getGroundTruth() {
+        Map<Attribute, Map<String, String>> groundTruth = new HashMap<>();
+        for (Attribute attr : site.getDomain().getAttributes()) {
+            try {
+                groundTruth.put(attr, getGroundTruth(attr));
+            } catch (SiteWithoutThisAttribute ex) {
+                Logger.getLogger(AllMappings.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return groundTruth;
+    }
 
+    /**
+     *
+     * @param attribute
+     * @return Map<PageURL, ExpectedValue>
+     * @throws SiteWithoutThisAttribute
+     */
+    private Map<String, String> getGroundTruth(Attribute attribute) throws SiteWithoutThisAttribute {
+        GroundTruth gt = GroundTruth.getInstance(site, attribute);
+        gt.load();
+
+        return gt.getGroundTruth();
+    }
+
+    public void execute() {
+        Map<Attribute, Map<String, String>> groundTruth = getGroundTruth();
+
+        File dir = new File(Paths.PATH_TRINITY + site.getPath() + "/offset");
+        int i = 0;
         for (File offset : dir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith(".csv");
             }
         })) {
-            Mapping map = new Mapping(site, offset);
+            System.out.println("Page : " + i);
+            i++;
+            Mapping map = new Mapping(site, offset, groundTruth);
             Map<Attribute, Integer> maps = map.getBestGroups();
             for (Attribute attr : maps.keySet()) {
                 List<String> dataRecord = new ArrayList<>();
@@ -86,18 +122,21 @@ public class AllMappings {
     }
 
     public static void main(String[] args) {
+
+        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/ved_w1/";
+
         for (Dataset dataset : Dataset.values()) {
             System.out.println("Dataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
                 System.out.println("\tDomain: " + domain);
-                
-                if (domain != br.edimarmanica.dataset.swde.Domain.BOOK){
+
+                if (domain != br.edimarmanica.dataset.swde.Domain.AUTO) {
                     continue;
                 }
-                
+
                 for (Site site : domain.getSites()) {
 
-                    if (site != br.edimarmanica.dataset.swde.book.Site.ADEBOOKS) {
+                    if (site != br.edimarmanica.dataset.swde.auto.Site.YAHOO) {
                         continue;
                     }
                     try {

@@ -34,20 +34,14 @@ import org.apache.commons.csv.CSVRecord;
  */
 public class Mapping {
 
-    private Site site;
-    private List<Map<String, String>> offset;
+    private final Site site;
+    private final List<Map<String, String>> offset;
+    private final Map<Attribute, Map<String, String>> groundTruth;//Map<Attribute, Map<PageURL, ExpectedValue>>
 
-    public Mapping(Site site, File offsetFile) {
+    public Mapping(Site site, File offsetFile, Map<Attribute, Map<String, String>> groundTruth) {
         this.site = site;
-
+        this.groundTruth = groundTruth;
         this.offset = readOffset(offsetFile);
-    }
-
-    private Map<String, String> getGroundTruth(Attribute attribute) throws SiteWithoutThisAttribute {
-        GroundTruth gt = GroundTruth.getInstance(site, attribute);
-        gt.load();
-        
-        return gt.getGroundTruth();
     }
 
     private List<Map<String, String>> readOffset(File offsetFile) {
@@ -94,17 +88,14 @@ public class Mapping {
         Map<Attribute, Integer> maps = new HashMap<>();
 
         for (Attribute attr : site.getDomain().getAttributes()) {
-            try {
-                Map<String, String> groundTruth = getGroundTruth(attr);
-                
-                if (groundTruth.isEmpty()){
-                    continue;//não tem gabarito para esse atributo
-                }
-                
-                maps.put(attr, getBestGroup(groundTruth));
-            } catch (SiteWithoutThisAttribute ex) {
-                maps.put(attr, -1);
+
+            Map<String, String> groundTruth = this.groundTruth.get(attr);
+
+            if (groundTruth == null || groundTruth.isEmpty()) {
+                continue;//não tem gabarito para esse atributo
             }
+
+            maps.put(attr, getBestGroup(groundTruth));
         }
         return maps;
     }
@@ -118,10 +109,16 @@ public class Mapping {
         int i = 0;
         for (Map<String, String> group : offset) {
             double f1 = getF1(group, groundTruth);
+            
+            if (f1 == 1){
+                return i;
+            }
+            
             if (f1 > maxF1) {
                 maxF1 = f1;
                 indexMaxGroup = i;
             }
+            
             i++;
         }
 
@@ -135,6 +132,9 @@ public class Mapping {
     private double getF1(Map<String, String> group, Map<String, String> groundTruth) {
         RuleMetrics metrics = RuleMetrics.getInstance(site, group, groundTruth);
         metrics.computeMetrics();
+        if (metrics.getRelevantRetrieved() == group.size()){
+            return 1; //todos os recuperados são relevantes. Nunca vai ter F1 realmente de um porque divido em offsets
+        }
         return metrics.getF1();
     }
 }
