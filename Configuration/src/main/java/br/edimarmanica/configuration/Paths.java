@@ -23,5 +23,5 @@ public class Paths {
     public final static String PATH_WEIR = PATH_ROOT+"weir03";
     public final static String PATH_WEIR_V2 = PATH_ROOT+"weir_v2";
     public final static String PATH_OVERLAP = PATH_ROOT+"overlap";
-    public final static String PATH_TRINITY = PATH_ROOT+"trinity/";
+    public static String PATH_TRINITY = PATH_ROOT+"trinity/";
 }
