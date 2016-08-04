@@ -51,7 +51,7 @@ public class CheckDistanceExpectedMapping {
                 if (masterRule.get(i) == null) { //pula
                     continue;
                 }
-                for (int j = 0; j < masterRule.size(); j++) {
+                for (int j = i+1; j < masterRule.size(); j++) {
                     if (masterRule.get(j) == null) { //pula
                         continue;
                     }
@@ -98,7 +98,7 @@ public class CheckDistanceExpectedMapping {
     }
 
     public static void main(String[] args) {
-        Domain domain = br.edimarmanica.dataset.weir.Domain.BOOK;
+        Domain domain = br.edimarmanica.dataset.weir.Domain.FINANCE;
         CheckDistanceExpectedMapping check = new CheckDistanceExpectedMapping(domain);
         check.execute();
     }

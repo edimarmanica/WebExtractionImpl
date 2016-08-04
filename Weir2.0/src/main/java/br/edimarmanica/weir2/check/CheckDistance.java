@@ -119,17 +119,22 @@ public class CheckDistance {
     private void printValues() {
         System.out.println("Entity =>  R1 (gabarito R1) =>  R2 (gabarito R2) => Page R1 X Page R2");
         for (String entity : entityValuesR1.keySet()) {
+            
+            if (getPage(entity, entityIDsR1) == null || getPage(entity, entityIDsR2) == null){
+                continue; //só computa a distância para entidades compartilhadas
+            }
+            
             System.out.println(entity + " => " + entityValuesR1.get(entity) + " (" + getGabarito(entity, true) + ") => " + entityValuesR2.get(entity) + " (" + getGabarito(entity, false) + ")" + " => " + getPage(entity, entityIDsR1) + " X " + getPage(entity, entityIDsR2));
         }
     }
 
     public static void main(String[] args) throws SiteWithoutThisAttribute {
-        Attribute attr = br.edimarmanica.dataset.weir.book.Attribute.PUBLISHER;
+        Attribute attr = br.edimarmanica.dataset.weir.finance.Attribute.VAR_PER;
 
-        Site site1 = br.edimarmanica.dataset.weir.book.Site.BOOKDEPOSITORY;
-        int R1 = 212;
-        Site site2 = br.edimarmanica.dataset.weir.book.Site.ECAMPUS;
-        int R2 = 529;
+        Site site1 = br.edimarmanica.dataset.weir.finance.Site.MONEYCENTRAL;
+        int R1 = 291;
+        Site site2 = br.edimarmanica.dataset.weir.finance.Site.BLOOMBERG;
+        int R2 = 27;
 
         CheckDistance check = new CheckDistance(attr, site1, R1, site2, R2);
         check.printInfo();

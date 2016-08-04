@@ -42,6 +42,9 @@ public abstract class TypeAwareDistance {
         } else if (typeR1 == DataType.WEIGHT && typeR2 == DataType.NUMBER
                 || typeR2 == DataType.WEIGHT && typeR1 == DataType.NUMBER) {
             type = DataType.WEIGHT;
+        } else if (typeR1 == DataType.PERCENTUAL && typeR2 == DataType.NUMBER
+                || typeR2 == DataType.PERCENTUAL && typeR1 == DataType.NUMBER) {
+            type = DataType.PERCENTUAL;
         } else if (typeR1 != typeR2) {
             return 1;
         }
@@ -65,6 +68,9 @@ public abstract class TypeAwareDistance {
                 break;
             case WEIGHT:
                 distance = new WeightDistance();
+                break;
+            case PERCENTUAL:
+                distance = new PercentualDistance();
                 break;
             case NUMBER:
                 distance = new NumberDistance();

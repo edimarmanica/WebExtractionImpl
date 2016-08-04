@@ -47,4 +47,29 @@ public class StringDistanceTest extends TestCase {
         assertEquals(expResult, result, 0.001);
 
     }
+    
+    public void testDistance2() throws InsufficientOverlapException {
+        System.out.println("distance");
+
+        String st01 = "Harriet Beecher Stowe";
+        Map<String, String> r1S1 = new HashMap<>();
+        r1S1.put("e1", st01); 
+        r1S1.put("e2", st01); 
+        r1S1.put("e3", st01);
+        r1S1.put("e4", st01);
+
+        String st02 = " Stowe, Harriet Beecher";
+        Map<String, String> r1S2 = new HashMap<>();
+        r1S2.put("e1", st02);  
+        r1S2.put("e2", st02);  
+        r1S2.put("e3", st02);  
+        r1S2.put("e4", st02);  
+        
+        StringDistance instance = new StringDistance();
+        double expResult = 0.0; //4 is the number of shared entities
+        double result = instance.distance(r1S1, r1S2);
+        System.out.println("Result: " + result);
+        assertEquals(expResult, result, 0.001);
+
+    }
 }
