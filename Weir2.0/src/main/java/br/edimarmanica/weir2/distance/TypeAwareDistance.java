@@ -28,13 +28,26 @@ public abstract class TypeAwareDistance {
      * @return
      */
     public static double typeDistance(Map<String, String> entityValuesR1, DataType typeR1, Map<String, String> entityValuesR2, DataType typeR2) {
-        
-        if (typeR1 != typeR2) {
+
+        DataType type = null;
+
+        if (typeR1 == typeR2) {
+            type = typeR1;
+        } else if (typeR1 == DataType.CURRENCY && typeR2 == DataType.NUMBER
+                || typeR2 == DataType.CURRENCY && typeR1 == DataType.NUMBER) {
+            type = DataType.CURRENCY;
+        } else if (typeR1 == DataType.LENGHT && typeR2 == DataType.NUMBER
+                || typeR2 == DataType.LENGHT && typeR1 == DataType.NUMBER) {
+            type = DataType.LENGHT;
+        } else if (typeR1 == DataType.WEIGHT && typeR2 == DataType.NUMBER
+                || typeR2 == DataType.WEIGHT && typeR1 == DataType.NUMBER) {
+            type = DataType.WEIGHT;
+        } else if (typeR1 != typeR2) {
             return 1;
         }
 
         TypeAwareDistance distance;
-        switch (typeR1) {
+        switch (type) {
             case DATE:
                 distance = new DateDistance();
                 break;

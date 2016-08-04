@@ -47,7 +47,7 @@ public class Weir {
         /**
          * starts with singleton mappings
          */
-        mappings = new HashSet<>();
+      /*  mappings = new HashSet<>();
         for (Rule r : rules) {
             mappings.add(new Mapping(r));
         }
@@ -115,7 +115,7 @@ public class Weir {
                 mappings.remove(mS1);
                 mappings.add(mUnion);
             }
-        }
+        }*/
     }
 
     /**

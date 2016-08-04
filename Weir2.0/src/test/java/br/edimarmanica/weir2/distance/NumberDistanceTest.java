@@ -45,4 +45,27 @@ public class NumberDistanceTest extends TestCase {
         assertEquals(expResult, result, 0.0);
 
     }
+    
+     public void testDistance02() throws InsufficientOverlapException {
+        System.out.println("distance");
+        Map<String, String> r1S1 = new HashMap<>();
+        r1S1.put("e1", "-0.24%"); 
+        r1S1.put("e2", "+4.33%"); 
+        r1S1.put("e3", "-2.07"); 
+        r1S1.put("e4", "-3.62%"); 
+        
+
+        Map<String, String> r1S2 = new HashMap<>();
+        r1S2.put("e1", "-0.239");   
+        r1S2.put("e2", "4.326"); 
+        r1S2.put("e3", "-2.066"); 
+        r1S2.put("e4", "-3.625"); 
+        
+
+        NumberDistance instance = new NumberDistance();
+        double expResult = 0; //4 é o número de instâncias compartilhadas
+        double result = instance.distance(r1S1, r1S2);
+        assertEquals(expResult, result, 0.0);
+
+    }
 }

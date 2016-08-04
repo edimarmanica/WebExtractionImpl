@@ -56,15 +56,15 @@ public class CurrencyDistance extends NumberDistance {
                 aux = aux.replaceAll(",", "").replaceAll("\\.", ",");
             }
         } else {
-            throw new NoiseException(aux, DataType.CURRENCY);
+            local = new Locale("en", "US");
+            aux = "$"+aux.trim();
         }
 
         NumberFormat form01 = NumberFormat.getCurrencyInstance(local);
         try {
             return form01.parse(aux).doubleValue() * multiplication;
         } catch (ParseException ex) {
-            Logger.getLogger(CurrencyDistance.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            throw new NoiseException(aux, DataType.CURRENCY);
         }
     }
 }

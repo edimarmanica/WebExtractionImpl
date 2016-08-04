@@ -5,6 +5,10 @@
  */
 package br.edimarmanica.weir2.distance;
 
+import br.edimarmanica.configuration.InterSite;
+import java.util.HashMap;
+import java.util.Map;
+import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 
 /**
@@ -15,6 +19,7 @@ public class CurrencyDistanceTest extends TestCase {
 
     public CurrencyDistanceTest(String testName) {
         super(testName);
+        InterSite.MIN_SHARED_ENTITIES = 1;
     }
 
     /**
@@ -51,5 +56,28 @@ public class CurrencyDistanceTest extends TestCase {
         result = instance.normalize(numericValue);
         assertEquals(expResult, result);
         
+        numericValue = "1.79";
+        expResult = 1.79;
+        result = instance.normalize(numericValue);
+        assertEquals(expResult, result);
+        
+    }
+    
+     public void testDistance() throws InsufficientOverlapException {
+        System.out.println("distance");
+
+        Map<String, String> r1S1 = new HashMap<>();
+        r1S1.put("e1", "7.19"); 
+
+        Map<String, String> r1S2 = new HashMap<>();
+        r1S2.put("e1", "$ 7.19");               
+        
+
+        CurrencyDistance instance = new CurrencyDistance();
+        double expResult = 0; //4 is the number of shared entities
+        double result = instance.distance(r1S1, r1S2);
+        System.out.println("Result: " + result);
+        assertEquals(expResult, result, 0.001);
+
     }
 }
