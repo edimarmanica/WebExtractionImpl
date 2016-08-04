@@ -20,17 +20,8 @@ import java.util.logging.Logger;
 public class Teste {
 
     public static void main(String[] args) {
-        System.out.println(Site.values()[4]);
-        Locale local = new Locale("en", "US");
-        NumberFormat form01 = NumberFormat.getCurrencyInstance(local);
-        String aux = "($19.0)";
-        
-        try {
-            System.out.println(form01.format(-19.15));
-            System.out.println(form01.parse(aux).doubleValue());
-
-        } catch (ParseException ex) {
-            Logger.getLogger(CurrencyDistance.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String st = "-1.25%";
+        String p = "(-)*\\d+((,|\\.)\\d+)*\\s*%";
+        System.out.println(st.matches(p));
     }
 }
