@@ -16,7 +16,9 @@ public class ValueDataType {
          */
         switch (type) {
             case DATE:
-                return "(\\d+(-|/)\\d+(-|/)\\d+)|(.*Jan .*|.*Feb .*|.*Mar .*|.*Apr .*|.*Aug .*|.*Sept .*|.*Oct .*|.*Nov .*|.*Dec .*|.*January.*|.*February.*|.*March.*|.*April.*|.*May.*|.*June.*|.*July.*|.*August.*|.*September.*|.*October.*|.*November.*|.*December.*)|(\\d{4}-\\d{2})";
+                String months = "(Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec|January|February|March|April|May|Jun|July|August|September|October|November|December)";
+                return "\\d{4}|\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}"
+                        + "|\\d{1,2} " + months + " \\d{4}|" + months + " \\d{1,2}, \\d{4}|" + months + " \\d{4}";
             case ISBN:
                 return "(\\d{3}(-)?)?\\d{10}";
             case PHONE:

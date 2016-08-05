@@ -20,8 +20,20 @@ import java.util.logging.Logger;
 public class Teste {
 
     public static void main(String[] args) {
-        String st = "-1.25%";
-        String p = "(-)*\\d+((,|\\.)\\d+)*\\s*%";
+        /*
+        2012        
+        01/01/2012 or 1/1/2012
+        2012-01-01 or 2012-1-1        
+        01/2012 or 1/2012        
+        2012-01 or 2012-1
+        05 Oct 1995 or 5 October 1995
+        October 23, 1995" or Jan 28, 1978
+        January 1996
+        */
+        String st = "January 1996";
+        String months = "(Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec|January|February|March|April|May|Jun|July|August|September|October|November|December)";
+        String p = "\\d{4}|\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}"
+                + "|\\d{1,2} "+months+" \\d{4}|"+months+" \\d{1,2}, \\d{4}|"+months+" \\d{4}";
         System.out.println(st.matches(p));
     }
 }
