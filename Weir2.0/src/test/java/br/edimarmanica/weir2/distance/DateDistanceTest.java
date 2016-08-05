@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import junit.framework.TestCase;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertEquals;
 
 /**
  *
@@ -73,6 +70,30 @@ public class DateDistanceTest extends TestCase {
         double expResult = 0;
         double result = instance.distance(r1S1, r1S2);
         assertEquals(expResult, result, 0.0);
+    }
+    
+     public void testDistance2() throws InsufficientOverlapException {
+        System.out.println("distance");
+
+        String st01 = "Jan 28, 1978";
+        Map<String, String> r1S1 = new HashMap<>();
+        r1S1.put("e1", st01); 
+        r1S1.put("e2", st01); 
+        r1S1.put("e3", st01);
+        r1S1.put("e4", st01);
+
+        String st02 = "28/1/1978";
+        Map<String, String> r1S2 = new HashMap<>();
+        r1S2.put("e1", st02);  
+        r1S2.put("e2", st02);  
+        r1S2.put("e3", st02);  
+        r1S2.put("e4", st02);  
+        
+        DateDistance instance = new DateDistance();
+        double expResult = 0.0; //4 is the number of shared entities
+        double result = instance.distance(r1S1, r1S2);
+        System.out.println("Result: " + result);
+        assertEquals(expResult, result, 0.001);
 
     }
 }

@@ -4,7 +4,6 @@
  */
 package br.edimarmanica.weir2.distance;
 
-import br.edimarmanica.configuration.General;
 import br.edimarmanica.configuration.InterSite;
 import br.edimarmanica.weir2.rule.type.DataType;
 import java.util.HashSet;
@@ -45,6 +44,9 @@ public abstract class TypeAwareDistance {
         } else if (typeR1 == DataType.PERCENTUAL && typeR2 == DataType.NUMBER
                 || typeR2 == DataType.PERCENTUAL && typeR1 == DataType.NUMBER) {
             type = DataType.PERCENTUAL;
+        } else if (typeR1 == DataType.DATE && typeR2 == DataType.STRING
+                || typeR2 == DataType.DATE && typeR1 == DataType.STRING) {
+            type = DataType.STRING;
         } else if (typeR1 != typeR2) {
             return 1;
         }

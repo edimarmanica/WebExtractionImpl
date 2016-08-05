@@ -82,7 +82,7 @@ public class DateDistance extends TypeAwareDistance {
             return getAllFormats04(date);
         }
 
-        // "October 23, 1995" or "October 5, 1995"
+        // "October 23, 1995" or "Jan 28, 1978"
         if (date.matches("[a-zA-Z]+ \\d{1,2}, \\d{4}")) {
             return getAllFormats05(date);
         }
@@ -91,13 +91,13 @@ public class DateDistance extends TypeAwareDistance {
         if (date.matches("[a-zA-Z]+ \\d{4}")) {
             return getAllFormats06(date);
         }
-
+       
         throw new NoiseException(date, DataType.DATE);
     }
 
     /**
      * Formats: 2011-12-12 ou 01/02/2012
-     *
+     * Não importa se é YYYY-MM-DD ou YYYY-DD-MM
      * @param date
      * @return
      */
@@ -174,13 +174,7 @@ public class DateDistance extends TypeAwareDistance {
 
         String[] partes = date.trim().split(" ");
         for (int i = 0; i < monthsAbrev.length; i++) {
-            if (partes[1].equals(monthsAbrev[i])) {
-                return getAllFormats01(Integer.valueOf(partes[2]) + "-" + (i + 1) + "-" + partes[0]);
-            }
-        }
-
-        for (int i = 0; i < months.length; i++) {
-            if (partes[1].equals(months[i])) {
+            if (partes[1].equals(monthsAbrev[i]) || partes[1].equals(months[i])) {
                 return getAllFormats01(Integer.valueOf(partes[2]) + "-" + (i + 1) + "-" + partes[0]);
             }
         }
@@ -189,7 +183,7 @@ public class DateDistance extends TypeAwareDistance {
     }
 
     /**
-     * Format: "October 23, 1995" or "October 5, 1995"
+     * Format: "October 23, 1995" or "Jan 28, 1978"
      *
      * @param date
      * @return
@@ -199,7 +193,7 @@ public class DateDistance extends TypeAwareDistance {
 
         String[] partes = date.trim().replaceAll(",", "").split(" ");
         for (int i = 0; i < months.length; i++) {
-            if (partes[0].equals(months[i])) {
+            if (partes[0].equals(monthsAbrev[i]) || partes[0].equals(months[i])) {
                 return getAllFormats01(Integer.valueOf(partes[2]) + "-" + (i + 1) + "-" + partes[1]);
             }
         }
