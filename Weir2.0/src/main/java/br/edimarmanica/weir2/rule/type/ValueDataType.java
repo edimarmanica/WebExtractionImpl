@@ -26,9 +26,9 @@ public class ValueDataType {
             case CURRENCY:
                 return "(\\$|€|EUR|USD|R\\$)(\\s)?\\d+.((,|.)\\d+)*";
             case LENGHT:
-                return "\\d+((,|\\.)\\d+)*\\s*(m|M|m.|cm|CM|km|KM|ft|'|yd|in|'')";
+                return "(?i)\\d+((,|\\.)\\d+)*\\s*(m|m.|cm|km|ft|'|yd|in|'')";
             case WEIGHT:
-                return "\\d+((,|\\.)\\d+)*\\s*(kg|g)";
+                return "(?i)\\d+((,|\\.)\\d+)*\\s*(kg|kg\\.|g|g\\.)";
             case PERCENTUAL:
                 return "(-)*\\d+((,|\\.)\\d+)*\\s*%";
             case NUMBER:
