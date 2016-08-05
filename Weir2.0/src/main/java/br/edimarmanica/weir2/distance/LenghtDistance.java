@@ -44,8 +44,7 @@ public class LenghtDistance extends NumberDistance {
         try {
             return form01.parse(numericValue.replaceAll("(a-zA-Z)+", "")).doubleValue() * multipication;
         } catch (ParseException ex) {
-            Logger.getLogger(LenghtDistance.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            throw new NoiseException(numericValue.replaceAll("(a-zA-Z)+", ""), DataType.LENGHT);
         }
     }
 }

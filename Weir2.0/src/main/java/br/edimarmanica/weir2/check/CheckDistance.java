@@ -129,12 +129,12 @@ public class CheckDistance {
     }
 
     public static void main(String[] args) throws SiteWithoutThisAttribute {
-        Attribute attr = br.edimarmanica.dataset.weir.finance.Attribute.VAR_PER;
+        Attribute attr = br.edimarmanica.dataset.weir.soccer.Attribute.BIRTHDATE;
 
-        Site site1 = br.edimarmanica.dataset.weir.finance.Site.MONEYCENTRAL;
-        int R1 = 291;
-        Site site2 = br.edimarmanica.dataset.weir.finance.Site.BLOOMBERG;
-        int R2 = 27;
+        Site site1 = br.edimarmanica.dataset.weir.soccer.Site.REUTERS;
+        int R1 = 292;
+        Site site2 = br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL;
+        int R2 = 736;
 
         CheckDistance check = new CheckDistance(attr, site1, R1, site2, R2);
         check.printInfo();
