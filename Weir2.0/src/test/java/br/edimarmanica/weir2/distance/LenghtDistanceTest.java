@@ -25,23 +25,23 @@ public class LenghtDistanceTest extends TestCase{
      */
     public void testNormalize() throws NoiseException {
         System.out.println("normalize");
-        String numericValue = "15m";
+        String numericValue = "1.81 m";
         LenghtDistance instance = new LenghtDistance();
-        Double expResult = new Double("15");
+        Double expResult = 1.81;
         Double result = instance.normalize(numericValue);
-        assertEquals(expResult, result);
+        assertEquals(numericValue, expResult, result);
         
-        numericValue = "200 cm";
+        numericValue = "181 cm";
         instance = new LenghtDistance();
-        expResult = new Double(2);
+        expResult = 1.81;
         result = instance.normalize(numericValue);
-        assertEquals(expResult, result);
+        assertEquals(numericValue, expResult, result);
         
         numericValue = "2 km";
         instance = new LenghtDistance();
         expResult = new Double(2000);
         result = instance.normalize(numericValue);
-        assertEquals(expResult, result);
+        assertEquals(numericValue, expResult, result);
         
     }
     
