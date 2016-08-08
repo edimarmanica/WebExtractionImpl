@@ -8,6 +8,7 @@ package br.edimarmanica.trinity.intrasitemapping.auto;
 import br.edimarmanica.trinity.extract.Extract;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,47 +16,57 @@ import java.util.List;
  */
 public class Mapping {
 
-    private List<List<String>> offset0; // Dimensões {regra, registro}
-    private List<List<String>> offsetX; // Dimensões {regra, registro}
+    private final Map<String, String> groupOffset0; 
+    private final List<Map<String, String>> offsetX;
 
-    public Mapping(List<List<String>> offset0, List<List<String>> offsetX) {
-        this.offset0 = offset0;
+    /**
+     *
+     * @param groupOffset0 a group of the offset0. Ex: Map<URL, ExpectedValue>
+     * @param offsetX all the groups of an offset x. Ex: List<Rule<URL, ExpectedValue>>
+     */
+    public Mapping(Map<String, String> groupOffset0, List<Map<String, String>> offsetX) {
+        this.groupOffset0 = groupOffset0;
         this.offsetX = offsetX;
     }
 
-    private int nrMatches(List<String> regraOffset0, List<String> regraOffsetX) {
+    /**
+     * 
+     * @param groupOffset0
+     * @param groupOffsetX
+     * @return the number of pages that the two groups extract the same value
+     */
+    private int nrMatches(Map<String, String> groupOffset0, Map<String, String> groupOffsetX) {
         int nrMatches = 0;
 
-        for (int nrRegistro = 0; nrRegistro < regraOffset0.size(); nrRegistro++) {
-            if (regraOffset0.get(nrRegistro).equals(regraOffsetX.get(nrRegistro))) {
+        for (String page: groupOffset0.keySet()) {
+            if (groupOffset0.get(page).equals(groupOffsetX.get(page))) {
                 nrMatches++;
             }
         }
-
         return nrMatches;
     }
 
     /**
-     * @param ruleIndex índice da regra do offset0 que está sendo avaliada
      * @return a regra do offsetX que deve ser mapeada para a regra ruleIndex do
      * offset0
+     * @throws br.edimarmanica.trinity.intrasitemapping.auto.MappingNotFoundException
      */
-    private int mapping(int ruleIndex) throws MappingNotFoundException {
+    public int mapping() throws MappingNotFoundException {
         int maxNrMatches = 0;
         int positionMaxMatches = -1;
 
-        for (int nrRegra = 0; nrRegra < offsetX.size(); nrRegra++) {
-            int nrMatches = nrMatches(offset0.get(ruleIndex), offsetX.get(nrRegra));
-            
-            if (nrMatches == Extract.NR_SHARED_PAGES){
-                return nrRegra;
+        for (int nrGroup = 0; nrGroup < offsetX.size(); nrGroup++) {
+            int nrMatches = nrMatches(groupOffset0, offsetX.get(nrGroup));
+
+            if (nrMatches == Extract.NR_SHARED_PAGES) {
+                return nrGroup;
             }
-            
+
             if (nrMatches > maxNrMatches) {
                 maxNrMatches = nrMatches;
-                positionMaxMatches = nrRegra;
+                positionMaxMatches = nrGroup;
             }
-            
+
         }
 
         //tem que casar com pelo menos 50% + 1. Não pode ser todos pois existem casos onde não extrai pq os NR_SHARED_PAGES são diferentes
@@ -64,33 +75,5 @@ public class Mapping {
         }
 
         return positionMaxMatches;
-    }
-
-    public List<Integer> mappings() {
-        List<Integer> mapping = new ArrayList<>();
-        for (int nrRegra = 0; nrRegra < offset0.size(); nrRegra++) {
-            int map;
-            try {
-                checkEmpty(offset0.get(nrRegra));
-                mapping.add(nrRegra, mapping(nrRegra));
-            } catch (MappingNotFoundException ex) {
-                mapping.add(nrRegra, -1);
-            }
-        }
-        return mapping;
-    }
-
-    private void checkEmpty(List<String> regraOffset0) throws MappingNotFoundException {
-        boolean flag = false;
-        for (String st : regraOffset0) {
-            if (!st.trim().isEmpty()) {
-                flag = true;
-                break;
-            }
-        }
-
-        if (!flag) {
-            throw new MappingNotFoundException();
-        }
-    }
+    } 
 }
