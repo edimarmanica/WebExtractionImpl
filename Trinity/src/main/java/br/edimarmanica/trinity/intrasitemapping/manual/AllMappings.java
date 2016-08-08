@@ -74,15 +74,14 @@ public class AllMappings {
         Map<Attribute, Map<String, String>> groundTruth = getGroundTruth();
 
         File dir = new File(Paths.PATH_TRINITY + site.getPath() + "/offset");
-        int i = 0;
+
         for (File offset : dir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith(".csv");
             }
         })) {
-            System.out.println("Page : " + i);
-            i++;
+
             Mapping map = new Mapping(site, offset, groundTruth);
             Map<Attribute, Integer> maps = map.getBestGroups();
             for (Attribute attr : maps.keySet()) {
@@ -130,15 +129,15 @@ public class AllMappings {
             for (Domain domain : dataset.getDomains()) {
                 System.out.println("\tDomain: " + domain);
 
-                if (domain != br.edimarmanica.dataset.swde.Domain.AUTO) {
+                if (domain != br.edimarmanica.dataset.weir.Domain.VIDEOGAME) {
                     continue;
                 }
 
                 for (Site site : domain.getSites()) {
 
-                    if (site != br.edimarmanica.dataset.swde.auto.Site.YAHOO) {
+                    /*if (site != br.edimarmanica.dataset.swde.university.Site.COLLEGEBOARD) {
                         continue;
-                    }
+                    }*/
                     try {
                         System.out.println("\t\tSite: " + site);
                         AllMappings am = new AllMappings(site);

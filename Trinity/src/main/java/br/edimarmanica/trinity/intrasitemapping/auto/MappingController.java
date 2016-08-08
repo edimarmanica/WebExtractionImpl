@@ -8,6 +8,7 @@ package br.edimarmanica.trinity.intrasitemapping.auto;
 import br.edimarmanica.trinity.extract.Extract;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Site;
+import br.edimarmanica.metrics.Formatter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -66,7 +67,7 @@ public class MappingController {
                             if (nrRegistro == 0) {
                                 List<String> regra = new ArrayList<>();
                                 try {
-                                    regra.add(Preprocessing.filter(record.get(nrRegra)));
+                                    regra.add(Formatter.formatValue(Preprocessing.filter(record.get(nrRegra))));
                                 } catch (InvalidValue ex) {
                                     regra.add("");
                                 }

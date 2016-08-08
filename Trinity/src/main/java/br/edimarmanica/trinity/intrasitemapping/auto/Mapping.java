@@ -46,10 +46,16 @@ public class Mapping {
 
         for (int nrRegra = 0; nrRegra < offsetX.size(); nrRegra++) {
             int nrMatches = nrMatches(offset0.get(ruleIndex), offsetX.get(nrRegra));
+            
+            if (nrMatches == Extract.NR_SHARED_PAGES){
+                return nrRegra;
+            }
+            
             if (nrMatches > maxNrMatches) {
                 maxNrMatches = nrMatches;
                 positionMaxMatches = nrRegra;
             }
+            
         }
 
         //tem que casar com pelo menos 50% + 1. Não pode ser todos pois existem casos onde não extrai pq os NR_SHARED_PAGES são diferentes
