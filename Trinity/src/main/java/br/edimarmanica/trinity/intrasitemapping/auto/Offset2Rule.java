@@ -55,21 +55,18 @@ public class Offset2Rule {
         allMappings = Load.loadMapping(path, site);
 
         File dirOffsets = new File(path + "/" + site.getPath() + "/offset");
-        boolean flag = true;
         for (File offsetFile : dirOffsets.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith(".csv");
             }
         })) {
-            System.out.println(offsetFile.getName());
-            execute(offsetFile, flag);
-            flag = false;
+            execute(offsetFile);
         }
 
     }
 
-    private void execute(File offsetFile, boolean firstOffset) {
+    private void execute(File offsetFile) {
         Map<Integer, Integer> mapOffset = allMappings.get(offsetFile.getName());
 
         List<Map<String, String>> offsetValues = Load.loadOffset(offsetFile, false);//List<Group<Page,ExtractedValue>>
@@ -81,23 +78,22 @@ public class Offset2Rule {
                 i++;
                 continue;
             }
-            System.out.println("Group: " + i + " X " + ruleID);
-            print(ruleID, group, !firstOffset);
+            print(ruleID, group);
             i++;
         }
     }
 
-    private void print(int ruleID, Map<String, String> values, boolean append) {
+    private void print(int ruleID, Map<String, String> values) {
         File output = new File(path + "/" + site.getPath() + "/extracted_values/" + "/rule_" + ruleID + ".csv");
 
         CSVFormat format;
-        if (append) {
+        if (output.exists()) {
             format = CSVFormat.EXCEL;
         } else {
             format = CSVFormat.EXCEL.withHeader(HEADER);
         }
 
-        try (Writer out = new FileWriter(output, append)) {
+        try (Writer out = new FileWriter(output, output.exists())) {
             try (CSVPrinter csvFilePrinter = new CSVPrinter(out, format)) {
                 for (String page : values.keySet()) {
 
