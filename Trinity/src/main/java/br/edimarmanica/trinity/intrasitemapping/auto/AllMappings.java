@@ -6,13 +6,18 @@
 package br.edimarmanica.trinity.intrasitemapping.auto;
 
 import br.edimarmanica.configuration.Paths;
+import br.edimarmanica.dataset.Dataset;
+import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
 import br.edimarmanica.metrics.Printer;
 import br.edimarmanica.trinity.extract.Extract;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +27,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  *
@@ -30,14 +37,15 @@ import org.apache.commons.csv.CSVPrinter;
  */
 public class AllMappings {
 
-    public static final String[] HEADER = {"GROUP_OFFSET0", "NAME_OFFSETX", "GROUP_OFFSETX"};
+    public static final String[] HEADER = {"NAME_OFFSET_X", "GROUP_OFFSET_X", "NAME_OFFSET_Y", "GROUP_OFFSET_Y"};
 
     private final Site site;
     private final String path;
 
     private boolean append = false;
-    private final Set<Integer> blackList = new HashSet<>(); //lista de índices do offset0 que não são mapeados pq extraem poucas informações
-    private List<Map<String, String>> offset0;
+    private final Set<Integer> blackList = new HashSet<>(); //lista de grupos do offsetX que não são mapeados pq extraem poucas informações
+    private List<Map<String, String>> groupsOffsetX;
+    private String nameOffsetX;
 
     public AllMappings(Site site, String path) {
         this.site = site;
@@ -45,10 +53,15 @@ public class AllMappings {
     }
 
     /**
-     * mapeia todos os offsets com o offset0
+     * mapeia todos os grupos do offsetY com os grupos do offsetX. O offsetX é o
+     * offset com o maior número de grupos, pois em alguns casos tem um atributo
+     * tem o mesmo valor em todas as páginas-entidade consideradas no offset
+     * (ex. Collins para publisher) ai não extraí naquele offset pois pensou que
+     * era template
      */
     private void mapping() {
-        offset0 = Load.loadOffset(new File(path + "/" + site.getPath() + "/offset/result_0.csv"), true);
+        nameOffsetX = findBestOffset();
+        groupsOffsetX = Load.loadOffset(new File(path + "/" + site.getPath() + "/offset/" + nameOffsetX), true);
 
         File dir = new File(path + "/" + site.getPath() + "/offset");
         for (File offsetFile : dir.listFiles(new FilenameFilter() {
@@ -57,28 +70,28 @@ public class AllMappings {
                 return name.endsWith(".csv");
             }
         })) {
-            if (offsetFile.getName().equals("result_0.csv")) {
+            if (offsetFile.getName().equals(nameOffsetX)) {
                 continue;
             }
-            List<Map<String, String>> offsetX = Load.loadOffset(offsetFile, true);
-            mapping(offsetFile.getName(), offsetX);
+            List<Map<String, String>> offsetY = Load.loadOffset(offsetFile, true);
+            mapping(offsetFile.getName(), offsetY);
         }
     }
 
     /**
-     * mapeia o offsetX com o offset0
+     * mapeia o offsetY com o offsetX
      *
-     * @param offsetX
+     * @param offsetY
      */
-    private void mapping(String nameOffsetX, List<Map<String, String>> valuesOffsetX) {
+    private void mapping(String nameOffsetY, List<Map<String, String>> valuesOffsetY) {
 
-        for (int i = 0; i < offset0.size(); i++) {
+        for (int i = 0; i < groupsOffsetX.size(); i++) {
 
-            if (blackList.contains(i)) {//esse grupo do offset0 não extrai valores
+            if (blackList.contains(i)) {//esse grupo do offsetX não extrai valores
                 continue;
             }
 
-            Mapping map = new Mapping(offset0.get(i), valuesOffsetX);
+            Mapping map = new Mapping(groupsOffsetX.get(i), valuesOffsetY);
             int mapping;
             try {
                 mapping = map.mapping();
@@ -87,8 +100,9 @@ public class AllMappings {
             }
 
             List<String> dataRecord = new ArrayList<>();
-            dataRecord.add(i + "");
             dataRecord.add(nameOffsetX);
+            dataRecord.add(i + "");
+            dataRecord.add(nameOffsetY);
             dataRecord.add(mapping + "");
             print(dataRecord);
         }
@@ -120,14 +134,16 @@ public class AllMappings {
     }
 
     /**
+     * Cada grupo do OffsetX para ser considerado tem que extrair pelo menos
+     * NR_SHARED_PAGES/2 valores não vazios
      *
-     * @param regraOffset0
+     * @param regraOffsetX
      * @throws MappingNotFoundException
      */
-    private void checkGroupsOffset0() throws MappingNotFoundException {
+    private void checkGroupsOffsetX() throws MappingNotFoundException {
 
         int i = 0;
-        for (Map<String, String> group : offset0) {
+        for (Map<String, String> group : groupsOffsetX) {
 
             int nrEmpty = 0;
             for (String value : group.values()) {
@@ -136,18 +152,81 @@ public class AllMappings {
                 }
             }
 
-            if (nrEmpty >= Extract.NR_SHARED_PAGES/2) {
+            if (nrEmpty >= Extract.NR_SHARED_PAGES / 2) {
                 blackList.add(i);
             }
             i++;
         }
     }
-    
+
+    /**
+     * Encontra o offset com o maior número de grupos que extrairam valores em
+     * todas as páginas
+     *
+     * @return
+     */
+    private String findBestOffset() {
+        String maxOffset = null;
+        int maxGroups = 0;
+        File dir = new File(path + "/" + site.getPath() + "/offset");
+        for (File offsetFile : dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".csv");
+            }
+        })) {
+
+            int nrGroups = nrGroups(offsetFile);
+            if (nrGroups > maxGroups) {
+                maxGroups = nrGroups;
+                maxOffset = offsetFile.getName();
+            }
+        }
+        return maxOffset;
+    }
+
+    /**
+     * encontra o nr de grupos do offset que extrairam valores em todas as
+     * páginas
+     *
+     * @param offset
+     * @return
+     */
+    private int nrGroups(File offset) {
+        int nrGroups = -1;
+
+        List<Map<String, String>> offsetY = Load.loadOffset(offset, true);
+        int maxNrPages = 0;
+        //número máximo de páginas
+        for (Map<String, String> group : offsetY) {
+            if (maxNrPages < group.size()) {
+                maxNrPages = group.size();
+            }
+        }
+
+        //nr de grupos com o número máximo de páginas
+        int count = 0;
+        for (Map<String, String> group : offsetY) {
+            if (group.size() == maxNrPages) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.weir.book.Site.BOOKDEPOSITORY;
-        String path = Paths.PATH_TRINITY+"/ved_w1_auto";
-        AllMappings am = new AllMappings(site, path);
-        am.mapping();
+
+        for (Dataset dataset : Dataset.values()) {
+            for (Domain domain : dataset.getDomains()) {
+                for (Site site : domain.getSites()) {
+                    System.out.println("Site: "+site);
+                    String path = Paths.PATH_TRINITY + "/ved_w1_auto";
+                    AllMappings am = new AllMappings(site, path);
+                    am.mapping();
+                }
+            }
+        }
     }
 
 }

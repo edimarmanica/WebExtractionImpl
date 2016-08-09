@@ -33,38 +33,39 @@ public class Load {
      * @param offsetFile
      * @param onlyDigitsAndLetters se true filtra para ficar só letras, dígitos
      * e . --> usado para o mapping
-     * @return List<Rule<Page,ExtractedValue>>
+     * @return List<Group<Page,ExtractedValue>>
      */
     public static List<Map<String, String>> loadOffset(File offsetFile, boolean onlyDigitsAndLetters) {
         List<Map<String, String>> offset = new ArrayList<>(); //cada arquivo é um offset
 
         try (Reader in = new FileReader(offsetFile)) {
             try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL)) {
-                int nrRegistro = 0;
                 for (CSVRecord record : parser) {
-
-                    for (int nrRegra = 0; nrRegra < record.size(); nrRegra++) {
+                    for (int nrGroup = 0; nrGroup < record.size(); nrGroup++) {
                         String value;
                         try {
                             if (onlyDigitsAndLetters) {
-                                value = Formatter.formatValue(Preprocessing.filter(record.get(nrRegra)));
+                                value = Formatter.formatValue(Preprocessing.filter(record.get(nrGroup)));
                             } else {
-                                value = Preprocessing.filter(record.get(nrRegra));
+                                value = Preprocessing.filter(record.get(nrGroup));
                             }
 
+                            Preprocessing.check(value);
                         } catch (InvalidValue ex) {
-                            value = "";
+                            if (offset.size() - 1 < nrGroup) {//só pode adicionar no primeiro, senão pode já ter valor e vc zerar
+                                offset.add(nrGroup, new HashMap<String, String>());
+                            }
+                            continue;
                         }
 
-                        if (nrRegistro == 0) {
-                            Map<String, String> regra = new HashMap<>();
-                            regra.put(Formatter.formatURL(record.get(0)), value);
-                            offset.add(regra);
+                        if (offset.size() - 1 < nrGroup) {
+                            Map<String, String> group = new HashMap<>();
+                            group.put(Formatter.formatURL(record.get(0)), value);
+                            offset.add(nrGroup, group);
                         } else {
-                            offset.get(nrRegra).put(Formatter.formatURL(record.get(0)), value);
+                            offset.get(nrGroup).put(Formatter.formatURL(record.get(0)), value);
                         }
                     }
-                    nrRegistro++;
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -78,5 +79,17 @@ public class Load {
 
     public static void loadMapping() {
 
+    }
+
+    public static void main(String[] args) {
+        List<Map<String, String>> offset = loadOffset(new File("/media/edimar/Dados/doutorado04/trinity/ved_w1_auto/WEIR/book/www.bookdepository.co.uk/offset/result_0.csv"), true);
+        int indGroup = 0;
+        System.out.println("Size: " + offset.size());
+        for (Map<String, String> group : offset) {
+            for (String page : group.keySet()) {
+                System.out.println(indGroup + ":" + page + "=>" + group.get(page));
+            }
+            indGroup++;
+        }
     }
 }

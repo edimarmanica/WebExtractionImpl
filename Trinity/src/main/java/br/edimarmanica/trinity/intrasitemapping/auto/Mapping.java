@@ -6,7 +6,6 @@
 package br.edimarmanica.trinity.intrasitemapping.auto;
 
 import br.edimarmanica.trinity.extract.Extract;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,30 +15,31 @@ import java.util.Map;
  */
 public class Mapping {
 
-    private final Map<String, String> groupOffset0; 
-    private final List<Map<String, String>> offsetX;
+    private final Map<String, String> groupOffsetX;
+    private final List<Map<String, String>> offsetY;
 
     /**
      *
-     * @param groupOffset0 a group of the offset0. Ex: Map<URL, ExpectedValue>
-     * @param offsetX all the groups of an offset x. Ex: List<Rule<URL, ExpectedValue>>
+     * @param groupOffsetX a group of the offsetX. Ex: Map<URL, ExtractedValue>
+     * @param offsetY all the groups of an offset x. Ex:
+     * List<Group<URL, ExtractedValue>>
      */
-    public Mapping(Map<String, String> groupOffset0, List<Map<String, String>> offsetX) {
-        this.groupOffset0 = groupOffset0;
-        this.offsetX = offsetX;
+    public Mapping(Map<String, String> groupOffsetX, List<Map<String, String>> offsetY) {
+        this.groupOffsetX = groupOffsetX;
+        this.offsetY = offsetY;
     }
 
     /**
-     * 
-     * @param groupOffset0
+     *
      * @param groupOffsetX
+     * @param groupOffsetY
      * @return the number of pages that the two groups extract the same value
      */
-    private int nrMatches(Map<String, String> groupOffset0, Map<String, String> groupOffsetX) {
+    private int nrMatches(Map<String, String> groupOffsetX, Map<String, String> groupOffsetY) {
         int nrMatches = 0;
 
-        for (String page: groupOffset0.keySet()) {
-            if (groupOffset0.get(page).equals(groupOffsetX.get(page))) {
+        for (String page : groupOffsetX.keySet()) {
+            if (groupOffsetX.get(page).equals(groupOffsetY.get(page))) {
                 nrMatches++;
             }
         }
@@ -47,16 +47,16 @@ public class Mapping {
     }
 
     /**
-     * @return a regra do offsetX que deve ser mapeada para a regra ruleIndex do
-     * offset0
-     * @throws br.edimarmanica.trinity.intrasitemapping.auto.MappingNotFoundException
+     * @return o grupo do offsetY que deve ser mapeado com o grupo do offsetX
+     * @throws
+     * br.edimarmanica.trinity.intrasitemapping.auto.MappingNotFoundException
      */
     public int mapping() throws MappingNotFoundException {
         int maxNrMatches = 0;
         int positionMaxMatches = -1;
 
-        for (int nrGroup = 0; nrGroup < offsetX.size(); nrGroup++) {
-            int nrMatches = nrMatches(groupOffset0, offsetX.get(nrGroup));
+        for (int nrGroup = 0; nrGroup < offsetY.size(); nrGroup++) {
+            int nrMatches = nrMatches(groupOffsetX, offsetY.get(nrGroup));
 
             if (nrMatches == Extract.NR_SHARED_PAGES) {
                 return nrGroup;
@@ -75,5 +75,5 @@ public class Mapping {
         }
 
         return positionMaxMatches;
-    } 
+    }
 }

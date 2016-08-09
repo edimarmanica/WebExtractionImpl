@@ -32,7 +32,8 @@ public class CheckMappingAuto {
     private final String pathAuto;
 
     private final Map<String, Map<String, Integer>> mappingsManual = new HashMap<>(); //<Attribute,<Offset, Group>>
-    private final Map<Integer, Map<String, Integer>> mappingsAuto = new HashMap<>(); //<GroupOffset0,<IndOffsetX, GroupOfsetX>>
+    private final Map<Integer, Map<String, Integer>> mappingsAuto = new HashMap<>(); //<GroupOffsetX,<NameOffsetY, GroupOfsetY>>
+    private String nameOffsetX;
 
     public CheckMappingAuto(Site site, String pathManual, String pathAuto) {
         this.site = site;
@@ -66,13 +67,28 @@ public class CheckMappingAuto {
             try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withHeader())) {
                 for (CSVRecord record : parser) {
 
-                    if (mappingsAuto.containsKey(Integer.parseInt(record.get("GROUP_OFFSET0")))) {
-                        mappingsAuto.get(Integer.parseInt(record.get("GROUP_OFFSET0"))).put(record.get("NAME_OFFSETX"), Integer.parseInt(record.get("GROUP_OFFSETX")));
+                    if (mappingsAuto.containsKey(Integer.parseInt(record.get("GROUP_OFFSET_X")))) {
+                        mappingsAuto.get(Integer.parseInt(record.get("GROUP_OFFSET_X"))).put(record.get("NAME_OFFSET_Y"), Integer.parseInt(record.get("GROUP_OFFSET_Y")));
                     } else {
                         Map<String, Integer> map = new HashMap<>();
-                        map.put(record.get("NAME_OFFSETX"), Integer.parseInt(record.get("GROUP_OFFSETX")));
-                        mappingsAuto.put(Integer.parseInt(record.get("GROUP_OFFSET0")), map);
+                        map.put(record.get("NAME_OFFSET_Y"), Integer.parseInt(record.get("GROUP_OFFSET_Y")));
+                        mappingsAuto.put(Integer.parseInt(record.get("GROUP_OFFSET_X")), map);
                     }
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CheckMappingAuto.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CheckMappingAuto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void readNameOffsetX() {
+        try (Reader in = new FileReader(pathAuto + "/" + site.getPath() + "/mappings.csv")) {
+            try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withHeader())) {
+                for (CSVRecord record : parser) {
+                    nameOffsetX = record.get("NAME_OFFSET_X");
+                    break;
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -85,25 +101,27 @@ public class CheckMappingAuto {
     public void check() {
         readMappingsManual();
         readMappingsAuto();
+        readNameOffsetX();
 
         //para cada atributo do offset manual
         for (String attr : mappingsManual.keySet()) {//Map<OFFSET_NAME, GROUP> 
-            int indOffset0 = mappingsManual.get(attr).get("result_0.csv"); //índice do offset0 que extraí o atributo corrente
+            int indOffset0 = mappingsManual.get(attr).get(nameOffsetX); //índice do offset0 que extraí o atributo corrente
 
-            for (String offsetX : mappingsManual.get(attr).keySet()) { // para cada offset que extraí esse atributo
-                if (offsetX.equals("result_0.csv")) {
+            for (String nameOffsetY : mappingsManual.get(attr).keySet()) { // para cada offset que extraí esse atributo
+                if (nameOffsetY.equals(nameOffsetX)) {
                     continue;
                 }
 
                 Integer autoMap = -1;
                 try {
-                    autoMap = mappingsAuto.get(indOffset0).get(offsetX);
+                    autoMap = mappingsAuto.get(indOffset0).get(nameOffsetY);
                 } catch (NullPointerException ex) {
                     //ficará com o -1
                 }
 
-                if (!mappingsManual.get(attr).get(offsetX).equals(autoMap)) { //verifica se o mapeamento automático foi igual ao manual
-                    System.out.println("Diferença;" + attr + ";" + offsetX + ";" + mappingsManual.get(attr).get(offsetX) + ";" + autoMap);
+                if (!mappingsManual.get(attr).get(nameOffsetY).equals(autoMap)) { //verifica se o mapeamento automático foi igual ao manual
+                    System.out.println("Diferença; attr; nameOffsetX; groupOffsetX_manual;nameOffsetY; groupOffsetY_manual; groupOffsetY_auto");
+                    System.out.println("Diferença;" + attr + ";" + nameOffsetX + ";" + mappingsManual.get(attr).get(nameOffsetX) + ";" + nameOffsetY + ";" + mappingsManual.get(attr).get(nameOffsetY) + ";" + autoMap);
                 }
 
             }
@@ -111,7 +129,7 @@ public class CheckMappingAuto {
     }
 
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.weir.book.Site.BOOKDEPOSITORY;
+        Site site = br.edimarmanica.dataset.weir.book.Site.BLACKWELL;
         String pathManual = Paths.PATH_TRINITY + "/ved_w1";
         String pathAuto = Paths.PATH_TRINITY + "/ved_w1_auto";
         CheckMappingAuto check = new CheckMappingAuto(site, pathManual, pathAuto);
