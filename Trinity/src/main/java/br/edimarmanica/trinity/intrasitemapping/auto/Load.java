@@ -5,7 +5,9 @@
  */
 package br.edimarmanica.trinity.intrasitemapping.auto;
 
+import br.edimarmanica.dataset.Site;
 import br.edimarmanica.metrics.Formatter;
+import br.edimarmanica.trinity.check.CheckMappingAuto;
 import br.edimarmanica.trinity.extract.Extract;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,8 +79,33 @@ public class Load {
         return offset;
     }
 
-    public static void loadMapping() {
+    /**
+     * 
+     * @param path
+     * @param site
+     * @return <NameOffsetY,<GroupOffsetY, GroupOfsetX>>
+     */
+    public static Map<String, Map<Integer, Integer>> loadMapping(String path, Site site) {
+        Map<String, Map<Integer, Integer>> mappingsAuto = new HashMap<>(); //<GroupOffsetX,<NameOffsetY, GroupOfsetY>>
+        try (Reader in = new FileReader(path + "/" + site.getPath() + "/mappings.csv")) {
+            try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withHeader())) {
+                for (CSVRecord record : parser) {
 
+                    if (mappingsAuto.containsKey(record.get("NAME_OFFSET_Y"))) {
+                        mappingsAuto.get(record.get("NAME_OFFSET_Y")).put(Integer.parseInt(record.get("GROUP_OFFSET_Y")), Integer.parseInt(record.get("GROUP_OFFSET_X")));
+                    } else {
+                        Map<Integer, Integer> map = new HashMap<>();
+                        map.put(Integer.parseInt(record.get("GROUP_OFFSET_Y")), Integer.parseInt(record.get("GROUP_OFFSET_X")));
+                        mappingsAuto.put(record.get("NAME_OFFSET_Y"), map);
+                    }
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CheckMappingAuto.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CheckMappingAuto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mappingsAuto;
     }
 
     public static void main(String[] args) {

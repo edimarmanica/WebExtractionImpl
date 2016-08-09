@@ -62,6 +62,7 @@ public class AllMappings {
     private void mapping() {
         nameOffsetX = findBestOffset();
         groupsOffsetX = Load.loadOffset(new File(path + "/" + site.getPath() + "/offset/" + nameOffsetX), true);
+        checkGroupsOffsetX();
 
         File dir = new File(path + "/" + site.getPath() + "/offset");
         for (File offsetFile : dir.listFiles(new FilenameFilter() {
@@ -70,11 +71,24 @@ public class AllMappings {
                 return name.endsWith(".csv");
             }
         })) {
-            if (offsetFile.getName().equals(nameOffsetX)) {
-                continue;
+            if (offsetFile.getName().equals(nameOffsetX)) {//offsetY = offsetX
+                for (int i = 0; i < groupsOffsetX.size(); i++) {
+                    if (blackList.contains(i)) {//esse grupo do offsetX não extrai valores
+                        continue;
+                    }
+
+                    List<String> dataRecord = new ArrayList<>();
+                    dataRecord.add(nameOffsetX);
+                    dataRecord.add(i + "");
+                    dataRecord.add(nameOffsetX);
+                    dataRecord.add(i + "");
+                    print(dataRecord);
+
+                }
+            } else {
+                List<Map<String, String>> offsetY = Load.loadOffset(offsetFile, true);
+                mapping(offsetFile.getName(), offsetY);
             }
-            List<Map<String, String>> offsetY = Load.loadOffset(offsetFile, true);
-            mapping(offsetFile.getName(), offsetY);
         }
     }
 
@@ -96,7 +110,8 @@ public class AllMappings {
             try {
                 mapping = map.mapping();
             } catch (MappingNotFoundException ex) {
-                mapping = -1;
+                //mapping = -1;
+                continue;//não encontrou mapping
             }
 
             List<String> dataRecord = new ArrayList<>();
@@ -138,21 +153,21 @@ public class AllMappings {
      * NR_SHARED_PAGES/2 valores não vazios
      *
      * @param regraOffsetX
-     * @throws MappingNotFoundException
      */
-    private void checkGroupsOffsetX() throws MappingNotFoundException {
+    private void checkGroupsOffsetX() {
 
         int i = 0;
         for (Map<String, String> group : groupsOffsetX) {
 
-            int nrEmpty = 0;
+            int nrNotEmpty = 0;
             for (String value : group.values()) {
+
                 if (!value.isEmpty()) {
-                    nrEmpty++;
+                    nrNotEmpty++;
                 }
             }
 
-            if (nrEmpty >= Extract.NR_SHARED_PAGES / 2) {
+            if (nrNotEmpty < Extract.NR_SHARED_PAGES / 2) {
                 blackList.add(i);
             }
             i++;
@@ -220,7 +235,11 @@ public class AllMappings {
         for (Dataset dataset : Dataset.values()) {
             for (Domain domain : dataset.getDomains()) {
                 for (Site site : domain.getSites()) {
-                    System.out.println("Site: "+site);
+                    if (site != br.edimarmanica.dataset.weir.book.Site.AMAZON) {
+                        continue;
+                    }
+
+                    System.out.println("Site: " + site);
                     String path = Paths.PATH_TRINITY + "/ved_w1_auto";
                     AllMappings am = new AllMappings(site, path);
                     am.mapping();
