@@ -30,10 +30,15 @@ public class WeightDistance extends NumberDistance {
         double multipication = 1;
 
         if (numericValue.contains("kg")) {
-            multipication = 1000;
-        } else if (numericValue.matches("([^(a-zA-Z)])+g([^(a-zA-Z)])*")) { //evitar que mm entre aqui
             multipication = 1;
-        } else {
+        } else if (numericValue.contains("lbs")){
+            multipication = 0.453592;
+        }else if (numericValue.matches("([^(a-zA-Z)])+g([^(a-zA-Z)])*")) { //grama
+            multipication = 1.0/1000;
+        }else if (numericValue.matches("([^(a-zA-Z)])+")){ //só número -- assume que é libras
+            multipication = 0.453592;
+        }
+        else {
             throw new NoiseException(numericValue, DataType.WEIGHT);
         }
 

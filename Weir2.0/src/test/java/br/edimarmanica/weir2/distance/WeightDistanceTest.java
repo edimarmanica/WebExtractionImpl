@@ -21,19 +21,25 @@ public class WeightDistanceTest extends TestCase {
 
     /**
      * Test of normalize method, of class WeightDistance.
+     * @throws br.edimarmanica.weir2.distance.NoiseException
      */
     public void testNormalize() throws NoiseException {
         System.out.println("normalize");
         String numericValue = "15 g";
         WeightDistance instance = new WeightDistance();
-        Double expResult = new Double("15");
+        Double expResult = 15.0/1000;
         Double result = instance.normalize(numericValue);
         assertEquals(expResult, result);
 
         numericValue = "2 kg";
-        expResult = new Double(2000);
+        expResult = 2.0;
         result = instance.normalize(numericValue);
         assertEquals(expResult, result);
+        
+        numericValue = "265 lbs.";
+        expResult = 120.2;
+        result = instance.normalize(numericValue);
+        assertEquals(expResult, result, 0.01);
     }
 
     public void testDistanceSpecific() throws InsufficientOverlapException {
@@ -56,7 +62,23 @@ public class WeightDistanceTest extends TestCase {
         WeightDistance instance = new WeightDistance();
         double expResult = 1.0 / 4;
         double result = instance.distance(r1S1, r1S2);
-        assertEquals(expResult, result, 0.0);
+        assertEquals(expResult, result, 0.01);
+
+    }
+    
+     public void testDistanceSpecific02() throws InsufficientOverlapException {
+        System.out.println("distanceSpecific");
+        Map<String, String> r1S1 = new HashMap<>();
+        r1S1.put("e1", "245.05 lbs."); 
+        
+
+        Map<String, String> r1S2 = new HashMap<>();
+        r1S2.put("e1", "245.05"); // valor padrão é em libras
+        
+        WeightDistance instance = new WeightDistance();
+        double expResult = 0;
+        double result = instance.distance(r1S1, r1S2);
+        assertEquals(expResult, result, 0.01);
 
     }
 }

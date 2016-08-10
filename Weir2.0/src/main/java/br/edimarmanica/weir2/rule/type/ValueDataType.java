@@ -28,7 +28,7 @@ public class ValueDataType {
             case LENGHT:
                 return "(?i)\\d+((,|\\.)\\d+)*\\s*(m|m.|cm|km|ft|'|yd|in|'')";
             case WEIGHT:
-                return "(?i)\\d+((,|\\.)\\d+)*\\s*(kg|kg\\.|g|g\\.)";
+                return "(?i)\\d+((,|\\.)\\d+)*\\s*(kg|kg\\.|lbs|lbs\\.|g|g\\.)";
             case PERCENTUAL:
                 return "(-)*\\d+((,|\\.)\\d+)*\\s*%";
             case NUMBER:

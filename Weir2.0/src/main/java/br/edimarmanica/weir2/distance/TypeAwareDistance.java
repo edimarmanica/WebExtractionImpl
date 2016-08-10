@@ -47,7 +47,10 @@ public abstract class TypeAwareDistance {
         } else if (typeR1 == DataType.DATE && typeR2 == DataType.STRING
                 || typeR2 == DataType.DATE && typeR1 == DataType.STRING) {
             type = DataType.STRING;
-        } else if (typeR1 != typeR2) {
+        } else if (typeR1 == DataType.ISBN && typeR2 == DataType.STRING
+                || typeR2 == DataType.ISBN && typeR1 == DataType.STRING) {
+            type = DataType.STRING;
+        }else if (typeR1 != typeR2) {
             return 1;
         }
 

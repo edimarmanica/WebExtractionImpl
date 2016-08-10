@@ -48,5 +48,16 @@ public class ValueDataTypeTest extends TestCase {
         DataType result = ValueDataType.getDataType(contraExample);
         assertEquals(expResult, result);
     }
+    
+    public void testCurrency() {
+        System.out.println("getDataType");
+        String examples[] = {"$231,400", "$201,500"};
+        DataType expResult = DataType.CURRENCY;
+
+        for (String value : examples) {
+            DataType result = ValueDataType.getDataType(value);
+            assertEquals(value, expResult, result);
+        }
+    }
 
 }

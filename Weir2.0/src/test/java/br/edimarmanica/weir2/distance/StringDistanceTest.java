@@ -51,14 +51,14 @@ public class StringDistanceTest extends TestCase {
     public void testDistance2() throws InsufficientOverlapException {
         System.out.println("distance");
 
-        String st01 = "Harriet Beecher Stowe";
+        String st01 = "978-0385528702";
         Map<String, String> r1S1 = new HashMap<>();
         r1S1.put("e1", st01); 
         r1S1.put("e2", st01); 
         r1S1.put("e3", st01);
         r1S1.put("e4", st01);
 
-        String st02 = " Stowe, Harriet Beecher";
+        String st02 = ": 9780385528702";
         Map<String, String> r1S2 = new HashMap<>();
         r1S2.put("e1", st02);  
         r1S2.put("e2", st02);  
