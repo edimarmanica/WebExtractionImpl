@@ -59,5 +59,16 @@ public class ValueDataTypeTest extends TestCase {
             assertEquals(value, expResult, result);
         }
     }
+    
+    public void testPhone() {
+        System.out.println("getDataType");
+        String examples[] = {"(803) 256-4220"};
+        DataType expResult = DataType.PHONE;
+
+        for (String value : examples) {
+            DataType result = ValueDataType.getDataType(value);
+            assertEquals(value, expResult, result);
+        }
+    }
 
 }

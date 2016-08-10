@@ -129,12 +129,12 @@ public class CheckDistance {
     }
 
     public static void main(String[] args) throws SiteWithoutThisAttribute {
-        Attribute attr = br.edimarmanica.dataset.swde.nba.Attribute.WEIGHT;
+        Attribute attr = br.edimarmanica.dataset.swde.university.Attribute.TYPE;
 
-        Site site1 = br.edimarmanica.dataset.swde.nba.Site.ESPN;
-        int R1 = 1679;
-        Site site2 = br.edimarmanica.dataset.swde.nba.Site.NBA;
-        int R2 = 873;
+        Site site1 = br.edimarmanica.dataset.swde.university.Site.COLLEGEBOARD;
+        int R1 = 12;
+        Site site2 = br.edimarmanica.dataset.swde.university.Site.USNEWS;
+        int R2 = 618;
 
         CheckDistance check = new CheckDistance(attr, site1, R1, site2, R2);
         check.printInfo();

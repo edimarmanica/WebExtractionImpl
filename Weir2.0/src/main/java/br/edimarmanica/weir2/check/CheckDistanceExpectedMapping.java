@@ -98,7 +98,7 @@ public class CheckDistanceExpectedMapping {
     }
 
     public static void main(String[] args) {
-        Domain domain = br.edimarmanica.dataset.swde.Domain.NBA_PLAYER;
+        Domain domain = br.edimarmanica.dataset.swde.Domain.UNIVERSITY;
         CheckDistanceExpectedMapping check = new CheckDistanceExpectedMapping(domain);
         check.execute();
     }

@@ -50,6 +50,9 @@ public abstract class TypeAwareDistance {
         } else if (typeR1 == DataType.ISBN && typeR2 == DataType.STRING
                 || typeR2 == DataType.ISBN && typeR1 == DataType.STRING) {
             type = DataType.STRING;
+        } else if (typeR1 == DataType.PHONE && typeR2 == DataType.STRING
+                || typeR2 == DataType.PHONE && typeR1 == DataType.STRING) {
+            type = DataType.STRING;
         }else if (typeR1 != typeR2) {
             return 1;
         }

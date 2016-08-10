@@ -22,7 +22,7 @@ public class ValueDataType {
             case ISBN:
                 return "(\\d{3}(-)?)?\\d{10}";
             case PHONE:
-                return "(\\()?0?x?x?(\\d{2})?\\s?\\d{4}-\\d{4}"; //(0xx11) 3396-4525
+                return "(\\()?(\\d{3})?(\\))?\\s?\\d{3,4}(-)?\\d{4}"; //(0xx11) 3396-4525
             case CURRENCY:
                 return "(\\$|€|EUR|USD|R\\$)(\\s)?\\d+.((,|.)\\d+)*";
             case LENGHT:
