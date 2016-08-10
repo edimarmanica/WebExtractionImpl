@@ -5,6 +5,7 @@
 package br.edimarmanica.metrics;
 
 import br.edimarmanica.configuration.Paths;
+import br.edimarmanica.dataset.Dataset;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
 import java.io.File;
@@ -23,27 +24,27 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-
 /**
  *
  * @author edimar
  */
 public class MergeResults {
+
     private boolean append = false;
     protected String outputPath;
 
     public MergeResults(String outputPath) {
         this.outputPath = outputPath;
     }
-    
+
     private void addMetricsSite(Site site) {
-        
+
         try (Reader in = new FileReader(outputPath + "/" + site.getPath() + "/result.csv")) {
             try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withHeader())) {
-                
+
                 for (CSVRecord record : parser) {
                     List<String> recordList = new ArrayList<>();
-                    for(String head: Printer.header){
+                    for (String head : Printer.header) {
                         recordList.add(record.get(head));
                     }
                     add(site, recordList);
@@ -63,7 +64,7 @@ public class MergeResults {
         if (append) {
             format = CSVFormat.EXCEL;
         } else {
-            
+
             format = CSVFormat.EXCEL.withHeader(Printer.header);
         }
 
@@ -76,16 +77,27 @@ public class MergeResults {
         }
         append = true;
     }
-    
-    public void merge(Domain domain){
-        for(Site site: domain.getSites()){
+
+    public void merge(Domain domain) {
+        for (Site site : domain.getSites()) {
             addMetricsSite(site);
         }
     }
-    
+
     public static void main(String[] args) {
-        MergeResults merge = new MergeResults(Paths.PATH_TRINITY );
-        merge.merge(br.edimarmanica.dataset.swde.Domain.UNIVERSITY);
+        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/ved_w1_auto/";
+
+
+        /*for (Dataset dataset : Dataset.values()) {
+            System.out.println("\tDataset: " + dataset);
+            for (Domain domain : dataset.getDomains()) {
+                System.out.println("\tDomain: " + domain);
+                MergeResults merge = new MergeResults(Paths.PATH_TRINITY);
+                merge.merge(domain);
+            }
+        }*/
+        MergeResults merge = new MergeResults(Paths.PATH_TRINITY);
+        merge.merge(br.edimarmanica.dataset.swde.Domain.JOB);
+
     }
 }
-
