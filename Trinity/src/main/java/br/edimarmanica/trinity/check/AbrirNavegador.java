@@ -35,15 +35,16 @@ public class AbrirNavegador {
     }
 
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.swde.movie.Site.ALLMOVIE;
+
+        Site site = br.edimarmanica.dataset.swde.job.Site.CAREERBUILDER;
 
         String[] pages = {
-            "1138.htm",
-            "1267.htm",
-            "0981.htm",
             "0835.htm",
-            "1972.htm",
-            "0919.htm"
+            "1267.htm",
+            "0702.htm",
+            "1138.htm",
+            "0981.htm",
+            "1022.htm"
         };
 
         openPages(site, pages);

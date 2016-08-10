@@ -233,13 +233,20 @@ public class AllMappings {
     public static void main(String[] args) {
 
         for (Dataset dataset : Dataset.values()) {
+            System.out.println("Dataset: "+dataset);
             for (Domain domain : dataset.getDomains()) {
+               /* if (domain != br.edimarmanica.dataset.weir.Domain.BOOK){
+                    continue;
+                }*/
+                
+                System.out.println("\tDomain: "+domain);
+                
                 for (Site site : domain.getSites()) {
-                    if (site != br.edimarmanica.dataset.weir.book.Site.AMAZON) {
+                    /*if (site != br.edimarmanica.dataset.weir.book.Site.AMAZON) {
                         continue;
-                    }
+                    }*/
 
-                    System.out.println("Site: " + site);
+                    System.out.println("\t\tSite: " + site);
                     String path = Paths.PATH_TRINITY + "/ved_w1_auto";
                     AllMappings am = new AllMappings(site, path);
                     am.mapping();

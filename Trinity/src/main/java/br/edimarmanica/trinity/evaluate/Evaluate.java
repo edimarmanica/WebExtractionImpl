@@ -89,17 +89,18 @@ public class Evaluate {
     }
 
     public static void main(String[] args) {
+        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/ved_w1_auto/";
 
         for (Dataset dataset : Dataset.values()) {
             System.out.println("\tDataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
-                if (domain != br.edimarmanica.dataset.swde.Domain.BOOK) {
+               /* if (domain != br.edimarmanica.dataset.swde.Domain.AUTO) {
                     continue;
-                }
+                }*/
 
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
-                    /*if (site != br.edimarmanica.dataset.swde.movie.Site.AMCTV) {
+                    /*if (site != br.edimarmanica.dataset.weir.book.Site.AMAZON) {
                         continue;
                     }*/
 
@@ -108,7 +109,7 @@ public class Evaluate {
                         Evaluate eval = new Evaluate(site);
                         eval.printMetrics();
                     } catch (Exception ex) {
-                        System.out.println("\t\t\tIgnorando");
+                        System.out.println("\t\t\tIgnorando: " + ex.getMessage());
                     }
                 }
             }

@@ -69,18 +69,17 @@ public class CheckTree {
     }
 
     public static void main(String[] args) {
-
-        Site site = br.edimarmanica.dataset.swde.movie.Site.YAHOO;
+        Site site = br.edimarmanica.dataset.swde.book.Site.ADEBOOKS;
 
         String[] pages = {
-            "1138.htm",
-            "1267.htm",
-            "0981.htm",
             "0835.htm",
-            "1972.htm",
-            "0300.htm"
+            "1267.htm",
+            "0702.htm",
+            "1138.htm",
+            "0981.htm",
+            "1462.htm"
         };
-        
+
         CheckTree cr = new CheckTree(site, pages);
         try {
             cr.execute();

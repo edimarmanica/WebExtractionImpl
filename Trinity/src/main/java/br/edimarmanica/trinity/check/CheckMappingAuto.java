@@ -129,7 +129,7 @@ public class CheckMappingAuto {
     }
 
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.weir.book.Site.AMAZON;
+        Site site = br.edimarmanica.dataset.weir.book.Site.BLACKWELL;
         String pathManual = Paths.PATH_TRINITY + "/ved_w1";
         String pathAuto = Paths.PATH_TRINITY + "/ved_w1_auto";
         CheckMappingAuto check = new CheckMappingAuto(site, pathManual, pathAuto);

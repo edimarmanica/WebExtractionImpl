@@ -152,19 +152,21 @@ public class OffsetToRule {
     }
 
     public static void main(String[] args) {
+        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/ved_w1/";
+        
         for (Dataset dataset : Dataset.values()) {
             System.out.println("Dataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
 
-                if (domain != br.edimarmanica.dataset.swde.Domain.BOOK) {
+                if (domain != br.edimarmanica.dataset.weir.Domain.VIDEOGAME) {
                     continue;
                 }
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
 
-                    if (site != br.edimarmanica.dataset.swde.book.Site.ADEBOOKS) {
+                   /* if (site != br.edimarmanica.dataset.swde.university.Site.COLLEGEBOARD) {
                         continue;
-                    }
+                    }*/
                     try {
                         System.out.println("\t\tSite: " + site);
                         OffsetToRule am = new OffsetToRule(site);
