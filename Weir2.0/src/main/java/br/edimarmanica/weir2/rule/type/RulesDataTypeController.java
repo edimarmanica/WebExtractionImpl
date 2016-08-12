@@ -37,16 +37,18 @@ public class RulesDataTypeController {
      * Persiste the datatype of each rule
      *
      * @param site
+     * @param pathInput
+     * @param pathOutput
      */
-    public static void persiste(Site site) {
+    public static void persiste(Site site, String pathInput, String pathOutput) {
         Map<String, DataType> ruleType = new HashMap<>();
 
-        File dirInput = new File(Paths.PATH_INTRASITE + "/" + site.getPath() + "/extracted_values");
+        File dirInput = new File(pathInput + "/" + site.getPath() + "/extracted_values");
         for (File rule : dirInput.listFiles()) {
             ruleType.put(rule.getName(), RuleDataType.getMostFrequentType(rule));
         }
 
-        File dirOutput = new File(Paths.PATH_WEIR_V2 + "/" + site.getPath());
+        File dirOutput = new File(pathOutput + "/" + site.getPath());
         dirOutput.mkdirs();
 
         File file = new File(dirOutput.getAbsolutePath() + "/types.csv");
@@ -70,12 +72,13 @@ public class RulesDataTypeController {
     /**
      *
      * @param site
+     * @param path
      * @return the type of the rules of the site that was persisted
      */
-    public static Map<String, DataType> load(Site site) {
+    public static Map<String, DataType> load(Site site, String path) {
         Map<String, DataType> ruleType = new HashMap<>();
 
-        try (Reader in = new FileReader(new File(Paths.PATH_WEIR_V2 + "/" + site.getPath() + "/types.csv"))) {
+        try (Reader in = new FileReader(new File(path + "/" + site.getPath() + "/types.csv"))) {
             try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withHeader())) {
                 for (CSVRecord record : parser) { //para cada value
                     String rule = record.get("RULE");
@@ -92,6 +95,8 @@ public class RulesDataTypeController {
     }
 
     public static void main(String[] args) {
+        String pathInput = Paths.PATH_INTRASITE;
+        String pathOuput = Paths.PATH_WEIR_V2;
         for (Dataset dataset : Dataset.values()) {
             System.out.println("Dataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
@@ -105,7 +110,7 @@ public class RulesDataTypeController {
                         continue;
                     }*/
                     System.out.println("\t\tSite: " + site);
-                    RulesDataTypeController.persiste(site);
+                    RulesDataTypeController.persiste(site, pathInput, pathOuput);
                 }
             }
         }
