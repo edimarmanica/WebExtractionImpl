@@ -35,7 +35,7 @@ public enum Domain implements br.edimarmanica.dataset.Domain {
 
     @Override
     public Attribute getAttributebyMyID(String attributeID) {
-        for (Attribute attr : br.edimarmanica.dataset.swde.auto.Attribute.values()) {
+        for (Attribute attr : getAttributes()) {
             if (attr.getAttributeID().equals(attributeID)) {
                 return attr;
             }
@@ -45,7 +45,7 @@ public enum Domain implements br.edimarmanica.dataset.Domain {
 
     @Override
     public Attribute getAttributeIDbyDataset(String attributeIDbyDataset) {
-        for (Attribute attr : br.edimarmanica.dataset.swde.auto.Attribute.values()) {
+        for (Attribute attr : getAttributes()) {
             if (attr.getAttributeIDbyDataset().equals(attributeIDbyDataset)) {
                 return attr;
             }
