@@ -53,7 +53,7 @@ public abstract class TypeAwareDistance {
         } else if (typeR1 == DataType.PHONE && typeR2 == DataType.STRING
                 || typeR2 == DataType.PHONE && typeR1 == DataType.STRING) {
             type = DataType.STRING;
-        }else if (typeR1 != typeR2) {
+        } else if (typeR1 != typeR2) {
             return 1;
         }
 
@@ -120,27 +120,26 @@ public abstract class TypeAwareDistance {
             throw new InsufficientOverlapException(sharedEntityIds.size());
         }
 
-        double distance = 0;
+        double distance = 0.0;
         for (String entity : sharedEntityIds) { //não importam os valores de entidades não compartilhadas
             String valueR1 = entityValuesR1.get(entity);
             String valueR2 = entityValuesR2.get(entity);
 
             if (valueR1 == null && valueR2 == null) { //os dois não extraem valores para essa entidade
-                distance += 0;
+                distance += 0.0;
             } else if (valueR1 == null || valueR2 == null) { //apenas um extrai valor para essa entidade
                 distance += 1;
             } else { //as duas regras extraem valores para a entidade
                 distance += distance(valueR1, valueR2);
             }
         }
-
         return distance / sharedEntityIds.size(); //tem que dividir pelo nr de instâncias compartilhadas entre os sites
     }
 
     public abstract double distanceSpecific(String vR1, String vR2);
 
     public double distance(String vR1, String vR2) {
-        if (vR1.equals(vR2)) {
+        if (vR1.toLowerCase().equals(vR2.toLowerCase())) {
             return 0;
         }
 
