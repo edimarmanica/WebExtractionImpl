@@ -14,10 +14,10 @@ import br.edimarmanica.trinity.extract.Extract;
 public class Preprocessing {
 
     public static String filter(String st) throws InvalidValue {
-        String aux = st.replaceAll("<[^>]*>", ""); //removing tags
-        aux = aux.replaceAll("\\&[^;]*;", "");//removing html entities
-        aux = aux.replaceAll("\"", "").replaceAll("\\\\", ""); //removing some unsupported characteres
-        aux = aux.replace((char) 160, ' ').replaceAll("\n", " ").replaceAll("\\s\\s+", " ");//removing extra white space
+        String aux = st.replaceAll("<[^>]*>", " "); //removing tags
+        aux = aux.replaceAll("\\&[^;]*;", " ");//removing html entities
+        aux = aux.replaceAll("\"", " ").replaceAll("\\\\", " "); //removing some unsupported characteres
+        aux = aux.replace((char) 160, ' ').replaceAll("\n", " ").replaceAll("\\s\\s+", " ").trim();//removing extra white space
         
         check(aux);
         
