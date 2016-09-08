@@ -28,12 +28,12 @@ import org.apache.commons.csv.CSVRecord;
  *
  * @author edimar
  */
-public class MergeResults {
+public class MergeDatasetResults {
 
     private boolean append = false;
     protected String outputPath;
 
-    public MergeResults(String outputPath) {
+    public MergeDatasetResults(String outputPath) {
         this.outputPath = outputPath;
     }
 
@@ -51,15 +51,15 @@ public class MergeResults {
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MergeResults.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MergeDatasetResults.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(MergeResults.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MergeDatasetResults.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     private void add(Site site, List<String> dataRecord) {
-        File file = new File(outputPath + "/" + site.getDomain().getPath() + "/result.csv");
+        File file = new File(outputPath + "/" + site.getDomain().getDataset().getFolderName() + "/result.csv");
         CSVFormat format;
         if (append) {
             format = CSVFormat.EXCEL;
@@ -73,31 +73,37 @@ public class MergeResults {
                 csvFilePrinter.printRecord(dataRecord);
             }
         } catch (IOException ex) {
-            Logger.getLogger(MergeResults.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MergeDatasetResults.class.getName()).log(Level.SEVERE, null, ex);
         }
         append = true;
     }
 
-    public void merge(Domain domain) {
+    private void merge(Domain domain) {
         for (Site site : domain.getSites()) {
             addMetricsSite(site);
         }
     }
+    
+    public void merge(Dataset dataset) {
+        for (Domain domain : dataset.getDomains()) {
+            merge(domain);
+        }
+    }
 
     public static void main(String[] args) {
-        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/ved_w1_auto/";
+        String path = Paths.PATH_TEMPLATE_VARIATION_AUTO; // + "/limiar_x/";
 
 
         /*for (Dataset dataset : Dataset.values()) {
             System.out.println("\tDataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
                 System.out.println("\tDomain: " + domain);
-                MergeResults merge = new MergeResults(Paths.PATH_TRINITY);
+                MergeDomainResults merge = new MergeDomainResults(Paths.PATH_TRINITY);
                 merge.merge(domain);
             }
         }*/
-        MergeResults merge = new MergeResults(Paths.PATH_TRINITY);
-        merge.merge(br.edimarmanica.dataset.swde.Domain.JOB);
+        MergeDatasetResults merge = new MergeDatasetResults(path);
+        merge.merge(br.edimarmanica.dataset.Dataset.WEIR);
 
     }
 }

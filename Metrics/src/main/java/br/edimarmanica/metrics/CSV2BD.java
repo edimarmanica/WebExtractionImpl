@@ -87,9 +87,9 @@ public class CSV2BD {
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MergeResults.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MergeDomainResults.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(MergeResults.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MergeDomainResults.class.getName()).log(Level.SEVERE, null, ex);
         }
         Conexao.getConexao().commit();
     }
