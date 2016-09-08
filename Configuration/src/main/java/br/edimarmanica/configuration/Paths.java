@@ -20,8 +20,10 @@ public class Paths {
     public static final String PATH_TEMPLATE_VARIATION_MANUAL = PATH_ROOT+"templateVariationManual/";
     public static final String PATH_TEMPLATE_VARIATION_MANUAL_FLEX = PATH_ROOT+"templateVariationManualFlex/";
     public static final String PATH_TEMPLATE_VARIATION_AUTO = PATH_ROOT+"templateVariationAuto/";
+    public static final String PATH_SCORE_ANALYSIS = PATH_ROOT+"scoreAnalysis/";
     public final static String PATH_WEIR = PATH_ROOT+"weir03";
     public final static String PATH_WEIR_V2 = PATH_ROOT+"weir_v2";
     public final static String PATH_OVERLAP = PATH_ROOT+"overlap";
+    public final static String PATH_TRINITY_PLUS_WEIR = PATH_ROOT+"TrinityPlusWeir/";
     public static String PATH_TRINITY = PATH_ROOT+"trinity/";
 }
