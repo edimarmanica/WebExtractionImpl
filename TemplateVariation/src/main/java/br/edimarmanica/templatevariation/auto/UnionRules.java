@@ -7,6 +7,7 @@ package br.edimarmanica.templatevariation.auto;
 import br.edimarmanica.configuration.General;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Attribute;
+import br.edimarmanica.dataset.Dataset;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
 import br.edimarmanica.metrics.GroundTruth;
@@ -32,19 +33,21 @@ import java.util.Set;
  */
 public class UnionRules {
 
-    private Site site;
+    private final Site site;
+    private final String outputPath;
     private Map<Integer, Rule> allRules;
     private int nrPages;
     private Printer printer;
 
-    public UnionRules(Site site) {
+    public UnionRules(Site site, String outputPath) {
         this.site = site;
+        this.outputPath = outputPath;
 
         allRules = LoadRule.loadAllRules(site);
     }
 
     public void execute() {
-        printer = new Printer(site, Paths.PATH_TEMPLATE_VARIATION_AUTO);
+        printer = new Printer(site, outputPath);
         nrPages = getNrPages();
 
         for (Attribute attribute : site.getDomain().getAttributes()) {
@@ -139,16 +142,16 @@ public class UnionRules {
 
         Map<String, String> pairUrlValue = new HashMap<>();
         Results results = new Results(site);
-            
+
         String masterRuleIDSst = "";
         String labelsSt = "";
         for (Integer ruleID : masterRuleIDs) {
             masterRuleIDSst += "rule_" + ruleID + ".csv" + General.SEPARADOR;
             labelsSt += labels.getLabels().get("rule_" + ruleID + ".csv") + General.SEPARADOR;
-                        
-            pairUrlValue.putAll(results.loadRule(new File(Paths.PATH_INTRASITE+site.getPath()+"/extracted_values/rule_" + ruleID + ".csv")));  //vai ler no formato correto do metrics
+
+            pairUrlValue.putAll(results.loadRule(new File(Paths.PATH_INTRASITE + site.getPath() + "/extracted_values/rule_" + ruleID + ".csv")));  //vai ler no formato correto do metrics
         }
-        
+
         RuleMetrics metrics = RuleMetrics.getInstance(site, pairUrlValue, groundTruth.getGroundTruth());
         metrics.computeMetrics();
 
@@ -166,11 +169,26 @@ public class UnionRules {
 
     public static void main(String[] args) {
         General.DEBUG = true;
-        Domain domain = br.edimarmanica.dataset.swde.Domain.AUTO;
-        for (Site site : domain.getSites()) {
-            System.out.println("Site: " + site);
-            UnionRules urw = new UnionRules(site);
-            urw.execute();
+
+        for (int i = 0; i <= 5; i++) {
+            if (i == 3) {
+                continue;//já estou rodando esse
+            }
+            Ranking.LIMIAR = i;
+            String outputPath = Paths.PATH_TEMPLATE_VARIATION_AUTO + "/limiar_" + Ranking.LIMIAR + "/";
+            System.out.println("Limiar: "+Ranking.LIMIAR);
+            for (Dataset dataset : Dataset.values()) {
+                System.out.println("\tDataset: " + dataset);
+                for (Domain domain : dataset.getDomains()) {
+                    System.out.println("\t\t Domain: " + domain);
+                    for (Site site : domain.getSites()) {
+                        System.out.println("\t\t\tSite: " + site);
+                        UnionRules urw = new UnionRules(site, outputPath);
+                        urw.execute();
+                    }
+                }
+            }
         }
+
     }
 }

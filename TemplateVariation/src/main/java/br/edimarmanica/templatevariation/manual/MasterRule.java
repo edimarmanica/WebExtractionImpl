@@ -7,7 +7,7 @@ package br.edimarmanica.templatevariation.manual;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Attribute;
 import br.edimarmanica.dataset.Site;
-import br.edimarmanica.metrics.MergeResults;
+import br.edimarmanica.metrics.MergeDomainResults;
 import br.edimarmanica.metrics.SiteWithoutThisAttribute;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -41,9 +41,9 @@ public class MasterRule {
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MergeResults.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MergeDomainResults.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(MergeResults.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MergeDomainResults.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         throw new SiteWithoutThisAttribute(attribute.getAttributeID(), site.getFolderName());

@@ -23,12 +23,15 @@ import java.util.Set;
  */
 public class Ranking {
 
-    public static final double T_xpath = 5.0 / 100;
-    public static final double T_label = 5.0 / 100;
-    public static final double T_domain = 40.0 / 100;
-    public static final double T_entity = 45.0 / 100;
-    public static final double T_size = 5.0 / 100;
+    public static final double T_xpath = 0.1245098039;
+    public static final double T_label = 0.0725490196;
+    public static final double T_domain = 0.2549019608;
+    public static final double T_entity = 0.4558823529;
+    public static final double T_size = 0.0921568627; //valores obtidos através do GainRation (AttributeEvaluator) e Ranker (Search Method) (ver doutorado04/scoreAnalysis) e normalizados
+    public static double LIMIAR = 0.3; //valor que obteve a maior acurácia
 
+
+    
     // tem aquele artigo que diz quando somar e quando multiplicar e o efeito disso
     /// features: XPath, Label, DomainSimilarity (nXn intrasite), EntitySimilarity (entity->entity intersite), nr de páginas extraídas   
     /**
@@ -56,7 +59,7 @@ public class Ranking {
         double sizeScore = sizeSim.score();
         double finalScore = T_xpath * xpathScore + T_label * labelScore + T_domain * domainScore + T_entity * entityScore + T_size * sizeScore;
 
-        if (domainScore < 0.5 && entityScore < 0.5) {//Threshold
+        if (finalScore < LIMIAR) {//Threshold
             return 0;
         }
 
