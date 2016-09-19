@@ -86,12 +86,15 @@ public class CSV2BD {
                     insertSiteResults(record.get("ATTRIBUTE"), record.get("RULE"), record.get("LABEL"), Integer.parseInt(record.get("RELEVANTS")), Integer.parseInt(record.get("RETRIEVED")), Integer.parseInt(record.get("RETRIEVED RELEVANTS")), Double.parseDouble(record.get("RECALL")), Double.parseDouble(record.get("PRECISION")), record.get("DATE"));
                 }
             }
+            Conexao.getConexao().commit();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MergeDomainResults.class.getName()).log(Level.SEVERE, null, ex);
+            Conexao.getConexao().rollback();
         } catch (IOException ex) {
             Logger.getLogger(MergeDomainResults.class.getName()).log(Level.SEVERE, null, ex);
+            Conexao.getConexao().rollback();
         }
-        Conexao.getConexao().commit();
+        
     }
 
     public static void main(String[] args) {
@@ -99,9 +102,15 @@ public class CSV2BD {
         methodPath.put("identificacaomanual", Paths.PATH_TEMPLATE_VARIATION_MANUAL);
         methodPath.put("weir", Paths.PATH_INTRASITE);
         methodPath.put("trinity", Paths.PATH_TRINITY+"/ved_w1/");
-        methodPath.put("orion", Paths.PATH_TEMPLATE_VARIATION_AUTO);
+        methodPath.put("orion_x", Paths.PATH_TEMPLATE_VARIATION_AUTO+"/limiar_x");
+        methodPath.put("orion_0", Paths.PATH_TEMPLATE_VARIATION_AUTO+"/limiar_0.0");
+        methodPath.put("orion_1", Paths.PATH_TEMPLATE_VARIATION_AUTO+"/limiar_1.0");
+        methodPath.put("orion_2", Paths.PATH_TEMPLATE_VARIATION_AUTO+"/limiar_2.0");
+        methodPath.put("orion_3", Paths.PATH_TEMPLATE_VARIATION_AUTO+"/limiar_3.0");
+        methodPath.put("orion_4", Paths.PATH_TEMPLATE_VARIATION_AUTO+"/limiar_4.0");
+        methodPath.put("orion_5", Paths.PATH_TEMPLATE_VARIATION_AUTO+"/limiar_5.0");
         
-        String method = "orion";
+        String method = "orion_0";
 
         for (Dataset dataset : Dataset.values()) {
             for (Domain domain : dataset.getDomains()) {
