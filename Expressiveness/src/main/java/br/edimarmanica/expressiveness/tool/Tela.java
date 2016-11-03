@@ -450,14 +450,14 @@ public class Tela extends javax.swing.JFrame {
 
     private void jbtLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLoadActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Essa opção não está mais disponível. Por questões de eficiência tem que gerar o CSV e depois o Neo4j!");
-       /* Site site = (Site) jCBSite.getSelectedItem();;
+        //JOptionPane.showMessageDialog(this, "Essa opção não está mais disponível. Por questões de eficiência tem que gerar o CSV e depois o Neo4j!");
+        Site site = (Site) jCBSite.getSelectedItem();;
         if (site == null) {
             JOptionPane.showMessageDialog(this, "Por favor selecione um site!");
             return;
         }
 
-        DirectoryToNeo4j load = new DirectoryToNeo4j(site, false);
+       /* DirectoryToNeo4j load = new DirectoryToNeo4j(site, false);
         try {
             load.loadPages();
             jtaLog.append("\n**** HTML pages loaded to Neo4J!");
