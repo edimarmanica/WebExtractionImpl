@@ -7,6 +7,7 @@ package br.edimarmanica.htmltocsvtoneo4j.neo4j;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Site;
 import br.edimarmanica.htmltocsvtoneo4j.csv2neo4j.RelTypes;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,13 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.neo4j.cypher.ExecutionEngine;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.kernel.impl.util.StringLogger;
 
 /**
  *
@@ -29,26 +29,22 @@ import org.neo4j.kernel.impl.util.StringLogger;
  */
 public class Neo4jHandler {
 
-    private GraphDatabaseService graphDb;
-    private Site site;
+    private final GraphDatabaseService graphDb;
+    private final Site site;
     private final static String DB_FILE_NAME = "graph.db";
-    private ExecutionEngine engine;
 
     public Neo4jHandler(Site site) {
         this.site = site;
-
-        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(getDBPath());
-        engine = new ExecutionEngine(graphDb, StringLogger.SYSTEM_ERR);
-
+        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(new File(getDBPath()));
         registerShutdownHook(graphDb);
     }
 
-    public Iterator<Map<String, Object>> executeCypher(String cypher) {
-        return (Iterator<Map<String, Object>>) engine.execute(cypher).javaIterator();
+    public Result executeCypher(String cypher) {
+        return graphDb.execute(cypher);
     }
 
-    public Iterator<Map<String, Object>> executeCypher(String cypher, Map<String, Object> params) {
-        return (Iterator<Map<String, Object>>) engine.execute(cypher, params).javaIterator();
+    public Result executeCypher(String cypher, Map<String, Object> params) {
+        return graphDb.execute(cypher, params);
     }
 
     /**
@@ -57,9 +53,7 @@ public class Neo4jHandler {
      * @return the node created
      */
     public Node insertNode(Map<String, String> properties) {
-
         Node node = graphDb.createNode();
-
         for (String key : properties.keySet()) {
             node.setProperty(key, properties.get(key));
         }
@@ -182,6 +176,21 @@ public class Neo4jHandler {
     public GraphDatabaseService getGraphDb() {
         return graphDb;
     }
-    
-    
+
+    public static void main(String[] args) {
+        Site site = br.edimarmanica.dataset.orion.driver.Site.CHAMP;
+        Neo4jHandler neo = new Neo4jHandler(site);
+        
+        String query = "MATCH (o) WHERE id(o) IN {id} SET o:Root ";
+        Map<String, Object> params = new HashMap<>();
+        List<Long> nodeID = new ArrayList<>();
+        nodeID.add(3l);
+        nodeID.add(4l);
+        params.put("id", nodeID);
+        Result rs = neo.executeCypher(query, params);
+        
+//        neo.executeCypher("MATCH (n) WHERE id(n)=0 SET n:Teste ");
+        System.out.println(neo.querySingleColumn("match (n:Root) return count(n) as t", "t").get(0));
+    }
+
 }

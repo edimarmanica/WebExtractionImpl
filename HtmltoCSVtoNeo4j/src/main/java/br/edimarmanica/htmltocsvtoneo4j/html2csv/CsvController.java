@@ -25,11 +25,11 @@ import org.apache.commons.csv.CSVPrinter;
  */
 public class CsvController {
 
-    private Site site;
+    private final Site site;
     private boolean appendNodes = false;
     private boolean appendRel = false;
-    private final String[] HEADER_NODES = {"VALUE", "NODE_TYPE", "PATH", "UNIQUE_PATH", "URL", "POSITION"};
-    private final String[] HEADER_REL = {"start", "end", "type"};
+    private final String[] HEADER_NODES = {"nodeId:ID(Node)","VALUE", "NODE_TYPE", "PATH", "UNIQUE_PATH", "URL", "POSITION"};
+    private final String[] HEADER_REL = {":START_ID(Node)", ":END_ID(Node)"};
     private final static String NODE_FILE_NAME = "nodes.csv";
     private final static String REL_FILE_NAME = "rels.csv";
 
@@ -45,9 +45,9 @@ public class CsvController {
         dir.mkdirs();
         CSVFormat format;
         if (appendNodes) {
-            format = CSVFormat.TDF;
+            format = CSVFormat.EXCEL;
         } else {
-            format = CSVFormat.TDF.withHeader(HEADER_NODES);
+            format = CSVFormat.EXCEL.withHeader(HEADER_NODES);
         }
 
         try (Writer out = new FileWriter(dir+ "/" + NODE_FILE_NAME, appendNodes)) {
@@ -71,9 +71,9 @@ public class CsvController {
         
         CSVFormat format;
         if (appendRel) {
-            format = CSVFormat.TDF;
+            format = CSVFormat.EXCEL;
         } else {
-            format = CSVFormat.TDF.withHeader(HEADER_REL);
+            format = CSVFormat.EXCEL.withHeader(HEADER_REL);
         }
 
         try (Writer out = new FileWriter(file, appendRel)) {
@@ -83,7 +83,7 @@ public class CsvController {
                     List<String> dataRecord = new ArrayList<>();
                     dataRecord.add(relationships.get(child)+"");
                     dataRecord.add(child+"");
-                    dataRecord.add(RelTypes.has_child.name());
+                    //dataRecord.add(RelTypes.has_child.name());
                     csvFilePrinter.printRecord(dataRecord);
                 }
 

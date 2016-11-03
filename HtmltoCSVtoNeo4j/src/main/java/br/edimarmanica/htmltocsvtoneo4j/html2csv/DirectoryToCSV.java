@@ -6,7 +6,6 @@ package br.edimarmanica.htmltocsvtoneo4j.html2csv;
 
 import br.edimarmanica.configuration.General;
 import br.edimarmanica.configuration.Paths;
-import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,15 +20,10 @@ import java.util.logging.Logger;
  */
 public class DirectoryToCSV {
 
-    private Site site;
+    private final Site site;
     private long currentNodeID = 0;
     private boolean append = false;
 
-    /**
-     *
-     * @param dir directory with pages to be loaded
-     * @param deleteCurrentDatabase if we should delete current database
-     */
     public DirectoryToCSV(Site site) {
         this.site = site;
     }
@@ -43,7 +37,7 @@ public class DirectoryToCSV {
              continue;
              }*/
             if (General.DEBUG) {
-                System.out.println("Page["+i+"]:" + f.getAbsolutePath());
+                System.out.println("Page[" + i + "]:" + f.getAbsolutePath());
             }
             loadPage(f);
         }
@@ -62,7 +56,7 @@ public class DirectoryToCSV {
         //   for (Site site : domain.getSites()) {
         //       System.out.println("Site: " + site.getFolderName());
         //     DirectoryToCSV load = new DirectoryToCSV(site);
-        DirectoryToCSV load = new DirectoryToCSV(br.edimarmanica.dataset.weir.videogame.Site.GAMES);
+        DirectoryToCSV load = new DirectoryToCSV(br.edimarmanica.dataset.orion.driver.Site.CHAMP);
 
         try {
             load.loadPages();

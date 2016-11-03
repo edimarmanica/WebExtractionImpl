@@ -33,17 +33,18 @@ import org.cyberneko.html.parsers.DOMParser;
  */
 public class HtmlToCSV {
 
-    private String pageURL;
-    private Map<Long, Long> relationships = new HashMap<>();
-    private FormatUniquePath formatter;
-    private CsvController csv;
+    private final String pageURL;
+    private final Map<Long, Long> relationships = new HashMap<>();
+    private final FormatUniquePath formatter;
+    private final CsvController csv;
     private long currentNodeID = 0;
 
     /**
-     * 
+     *
      * @param pageURL
      * @param site
-     * @param rootID ID para a raiz, de modo a comportar a inserção em diversas páginas
+     * @param rootID ID para a raiz, de modo a comportar a inserção em diversas
+     * páginas
      * @param append false create a new file, true append in the current file
      */
     public HtmlToCSV(String pageURL, Site site, long rootID, boolean append) {
@@ -51,7 +52,7 @@ public class HtmlToCSV {
 
         formatter = new FormatUniquePath(pageURL); //só pode instanciar uma vez por página para funcionar corretamente
         csv = new CsvController(site, append);
-        
+
         this.currentNodeID = rootID;
     }
 
@@ -90,7 +91,7 @@ public class HtmlToCSV {
     }
 
     /**
-     * 
+     *
      * @return the ID of the last inserted node
      */
     public Long insertAllNodes() {
@@ -104,7 +105,7 @@ public class HtmlToCSV {
             //só ignora o nodo
             //Logger.getLogger(HtmlHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return currentNodeID-1;
+        return currentNodeID - 1;
     }
 
     /**
@@ -117,12 +118,15 @@ public class HtmlToCSV {
     private Long insertNode(Node node, Long parentNodeID) throws InvalidTextNode {
         Map<String, String> properties = new HashMap<>();
 
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-            properties.put("VALUE", node.getName());
-        } else if (node.getNodeType() == Node.TEXT_NODE) {
-            properties.put("VALUE", FormatTextNode.format(node.getStringValue()));
-        } else {
-            return null;
+        switch (node.getNodeType()) {
+            case Node.ELEMENT_NODE:
+                properties.put("VALUE", node.getName());
+                break;
+            case Node.TEXT_NODE:
+                properties.put("VALUE", FormatTextNode.format(node.getStringValue()));
+                break;
+            default:
+                return null;
         }
 
         String formattedUniquePath = formatter.format(node.getUniquePath(), node.getNodeType());
@@ -133,9 +137,9 @@ public class HtmlToCSV {
         properties.put("URL", pageURL);
         properties.put("POSITION", FormatUniquePath.getNodePosition(formattedUniquePath) + "");
 
-
         long newNodeID = currentNodeID;
         currentNodeID++;
+        properties.put("nodeId:ID(Node)", newNodeID + "");
         csv.addNode(properties);
 
         if (parentNodeID != null) { //root não tem pai
@@ -159,7 +163,7 @@ public class HtmlToCSV {
     }
 
     public static void main(String[] args) {
-        HtmlToCSV html = new HtmlToCSV("/media/edimar/SAMSUNG/doutorado04/bases/SWDE/nbaplayer/nbaplayer-usatoday/0275.htm", br.edimarmanica.dataset.swde.nba.Site.USATODAY, 0, false);
+        HtmlToCSV html = new HtmlToCSV("/media/edimar/Dados/doutorado04/bases/ORION/driver/champ/586410.html", br.edimarmanica.dataset.orion.driver.Site.CHAMP, 0, false);
         html.insertAllNodes();
     }
 }
