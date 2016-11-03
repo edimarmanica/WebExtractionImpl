@@ -10,7 +10,7 @@ package br.edimarmanica.dataset;
  */
 public enum Dataset {
 
-    WEIR("WEIR"), SWDE("SWDE");
+    WEIR("WEIR"), SWDE("SWDE"), ORION("ORION");
     private String folderName;
 
     private Dataset(String folderName) {
@@ -32,6 +32,8 @@ public enum Dataset {
                 return br.edimarmanica.dataset.weir.Domain.values();
             case SWDE:
                 return br.edimarmanica.dataset.swde.Domain.values();
+            case ORION:
+                return br.edimarmanica.dataset.orion.Domain.values();
             default:
                 throw new UnsupportedOperationException("Dataset ainda não configurado");
         }

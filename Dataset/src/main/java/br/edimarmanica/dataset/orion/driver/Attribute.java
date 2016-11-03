@@ -2,19 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edimarmanica.dataset.swde.movie;
+package br.edimarmanica.dataset.orion.driver;
 
 /**
  *
  * @author edimar
  */
 public enum Attribute implements br.edimarmanica.dataset.Attribute {
+    NAME("name", "name"), DOB("dob", "dob"), COUNTRY("country", "country"), SITE("site", "site");
 
-    DIRECTOR("director", "director"), GENRE("genre", "genre"),
-    RATING("rating", "mpaa_rating"), TITLE("title", "title");
-
-    private String attributeID;
-    private String attributeIDbyDataset; //ID do atributo pelo domínio
+    private final String attributeID;
+    private final String attributeIDbyDataset; //ID do atributo pelo domínio
 
     private Attribute(String attributeID, String attributeIDbyDataset) {
         this.attributeID = attributeID;
