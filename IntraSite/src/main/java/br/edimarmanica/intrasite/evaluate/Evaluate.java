@@ -100,9 +100,9 @@ public class Evaluate {
             for (Domain domain : dataset.getDomains()) {
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
-                    if (site != br.edimarmanica.dataset.weir.book.Site.AMAZON) {
+                   /* if (site != br.edimarmanica.dataset.swde.movie.Site.ALLMOVIE) {
                         continue;
-                    }
+                    }*/
 
                     System.out.println("\t\tSite: " + site);
                     Evaluate eval = new Evaluate(site);

@@ -52,7 +52,7 @@ public class SetTemplates {
     private void processCSV() {
         long recordID = 0;
         try (Reader in = new FileReader(Paths.PARTIAL_CSV_PATH + "/" + site.getPath() + "/" + NODE_FILE_NAME)) {
-            try (CSVParser parser = new CSVParser(in, CSVFormat.TDF.withHeader())) {
+            try (CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withHeader())) {
                 for (CSVRecord record : parser) {
                     int type = Integer.valueOf(record.get("NODE_TYPE"));
                     if (type == 3) {
@@ -102,14 +102,14 @@ public class SetTemplates {
     }
 
     private void addTemplateLabel(List<Long> nodeID) {
-        String cypherTemplate = "MATCH o WHERE id(o) = {id} SET o:" + Label.Template + " RETURN count(o)";
+        String cypherTemplate = "MATCH (o) WHERE id(o) IN {id} SET o:" + Label.Template + " ";
         Map<String, Object> params = new HashMap<>();
         params.put("id", nodeID);
         neo4j.executeCypher(cypherTemplate, params);
     }
 
     private void addCandValueLabel(List<Long> nodeID) {
-        String cypherTemplate = "MATCH o WHERE id(o) = {id} SET o:" + Label.CandValue + " RETURN count(o)";
+        String cypherTemplate = "MATCH (o) WHERE id(o) IN {id} SET o:" + Label.CandValue + " ";
         Map<String, Object> params = new HashMap<>();
         params.put("id", nodeID);
         neo4j.executeCypher(cypherTemplate, params);
@@ -133,7 +133,7 @@ public class SetTemplates {
         }*/
 
 
-        SetTemplates st = new SetTemplates(br.edimarmanica.dataset.swde.movie.Site.ALLMOVIE);
+        SetTemplates st = new SetTemplates(br.edimarmanica.dataset.orion.driver.Site.CHAMP);
         st.execute();
     }
 }

@@ -159,7 +159,7 @@ public class FindClosestTemplate {
     }
 
     public static void main(String[] args) {
-        FindClosestTemplate g = new FindClosestTemplate(br.edimarmanica.dataset.swde.book.Site.ADEBOOKS);
+        FindClosestTemplate g = new FindClosestTemplate(br.edimarmanica.dataset.orion.driver.Site.CHAMP);
         g.execute();
     }
 }

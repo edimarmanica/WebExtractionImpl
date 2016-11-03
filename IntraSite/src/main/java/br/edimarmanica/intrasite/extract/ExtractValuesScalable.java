@@ -138,7 +138,7 @@ public class ExtractValuesScalable {
      */
     private Map<String, String> scaleQuery(CypherRule rule) {
         String scaleQuery = rule.getQuery().replaceAll("MATCH ", "MATCH (block:Block) WHERE block.KEY=LEFT({valuex}, " + Blocking.BLOCK_SIZE + ") WITH block \n"
-                + "MATCH block-->");
+                + "MATCH (block)-->");
         Map<String, Object> scaleParams = rule.getParams();
         scaleParams.put("valuex", rule.getLabel());
 

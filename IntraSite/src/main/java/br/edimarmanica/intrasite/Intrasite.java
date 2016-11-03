@@ -7,7 +7,6 @@ package br.edimarmanica.intrasite;
 import br.edimarmanica.configuration.General;
 import br.edimarmanica.dataset.Site;
 import br.edimarmanica.expressiveness.generate.beans.CypherRule;
-import br.edimarmanica.intrasite.extract.ExtractValues;
 import br.edimarmanica.intrasite.extract.ExtractValuesScalable;
 import br.edimarmanica.intrasite.rules.FindClosestTemplate;
 import br.edimarmanica.intrasite.rules.GenerateRules;
@@ -27,17 +26,17 @@ public class Intrasite {
             System.out.println(">> SetTemplates");
         }
         //Define template nodes and candidate value nodes
-   //     SetTemplates st = new SetTemplates(site);
-   //     st.execute();
+  //      SetTemplates st = new SetTemplates(site);
+  //      st.execute();
 
         if (General.DEBUG) {
             System.out.println(">> GenerateRules");
         }
-        
+
         //Find closest template node to each candidate value node
-    //    FindClosestTemplate fct = new FindClosestTemplate(site);
-    //    fct.execute();
-        
+  //      FindClosestTemplate fct = new FindClosestTemplate(site);
+  //      fct.execute();
+
         //Generate candidate rules
         GenerateRules gr = new GenerateRules(site);
         Set<CypherRule> rules = gr.readRules();
@@ -58,7 +57,6 @@ public class Intrasite {
 //        //TEmplateNodesFilter
 //        TemplateNodesFilter tnfilter = new TemplateNodesFilter(site);
 //        rules = tnfilter.filter(rules);
-
         if (General.DEBUG) {
             System.out.println(">>>> Remaining rules: " + rules.size());
             System.out.println(">> ExtractValues");
@@ -71,11 +69,11 @@ public class Intrasite {
             System.out.println("End INTRASITE");
         }
     }
-    
+
     public static void main(String[] args) {
-        
-        General.DEBUG=true;
+
+        General.DEBUG = true;
         Intrasite intra = new Intrasite();
-        intra.execute(br.edimarmanica.dataset.swde.camera.Site.BEACHAUDIO);
+        intra.execute(br.edimarmanica.dataset.orion.driver.Site.CHAMP);
     }
 }
