@@ -9,7 +9,7 @@ package br.edimarmanica.dataset.orion.driver;
  * @author edimar
  */
 public enum Attribute implements br.edimarmanica.dataset.Attribute {
-    NAME("name", "name"), DOB("dob", "dob"), COUNTRY("country", "country"), SITE("site", "site");
+    NAME("name", "name"), DOB("dob", "dob"), POB("pob", "pob"), SITE("team", "team");
 
     private final String attributeID;
     private final String attributeIDbyDataset; //ID do atributo pelo domínio

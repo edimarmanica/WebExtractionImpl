@@ -15,7 +15,7 @@ import java.io.File;
  */
 public enum Domain implements br.edimarmanica.dataset.Domain {
 
-    DRIVER("driver");
+    DRIVER("driver_orion");
     private final String folderName;
 
     private Domain(String folderName) {
