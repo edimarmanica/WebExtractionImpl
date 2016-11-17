@@ -8,6 +8,7 @@ import br.edimarmanica.dataset.Attribute;
 import static br.edimarmanica.dataset.Dataset.SWDE;
 import static br.edimarmanica.dataset.Dataset.WEIR;
 import br.edimarmanica.dataset.Site;
+import br.edimarmanica.metrics.orion.GroundTruthOrion;
 import br.edimarmanica.metrics.swde.GroundTruthSwde;
 import br.edimarmanica.metrics.weir.GroundTruthWeir;
 import java.util.HashMap;
@@ -21,19 +22,21 @@ public abstract class GroundTruth {
 
     protected Site site;
     protected Attribute attribute;
-    protected Map<String, String> groundTruth = new HashMap<>(); 
+    protected Map<String, String> groundTruth = new HashMap<>();
 
     public GroundTruth(Site site, Attribute attribute) {
         this.site = site;
         this.attribute = attribute;
     }
-    
-      public static GroundTruth getInstance(Site site, Attribute attribute) {
+
+    public static GroundTruth getInstance(Site site, Attribute attribute) {
         switch (site.getDomain().getDataset()) {
             case SWDE:
                 return new GroundTruthSwde(site, attribute);
             case WEIR:
                 return new GroundTruthWeir(site, attribute);
+            case ORION:
+                return new GroundTruthOrion(site, attribute);
             default:
                 return null;
         }

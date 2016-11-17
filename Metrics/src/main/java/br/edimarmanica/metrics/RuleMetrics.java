@@ -7,6 +7,7 @@ package br.edimarmanica.metrics;
 import static br.edimarmanica.dataset.Dataset.SWDE;
 import static br.edimarmanica.dataset.Dataset.WEIR;
 import br.edimarmanica.dataset.Site;
+import br.edimarmanica.metrics.orion.RuleMetricsOrion;
 import br.edimarmanica.metrics.swde.RuleMetricsSwde;
 import br.edimarmanica.metrics.weir.RuleMetricsWeir;
 import java.util.HashSet;
@@ -31,13 +32,15 @@ public abstract class RuleMetrics {
         this.ruleValues = ruleValues;
         this.groundTruth = groundTruth;
     }
-    
-     public static RuleMetrics getInstance(Site site, Map<String, String> ruleValues, Map<String, String> groundTruth) {
+
+    public static RuleMetrics getInstance(Site site, Map<String, String> ruleValues, Map<String, String> groundTruth) {
         switch (site.getDomain().getDataset()) {
             case SWDE:
                 return new RuleMetricsSwde(ruleValues, groundTruth);
             case WEIR:
                 return new RuleMetricsWeir(ruleValues, groundTruth);
+            case ORION:
+                return new RuleMetricsOrion(ruleValues, groundTruth);
             default:
                 return null;
         }

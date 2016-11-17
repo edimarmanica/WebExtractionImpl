@@ -85,7 +85,7 @@ public class MergeDomainResults {
     }
 
     public static void main(String[] args) {
-        String path = Paths.PATH_TEMPLATE_VARIATION_AUTO; // + "/limiar_x/";
+        String path = Paths.PATH_INTRASITE; // + "/limiar_x/";
 
 
         /*for (Dataset dataset : Dataset.values()) {
@@ -97,7 +97,7 @@ public class MergeDomainResults {
             }
         }*/
         MergeDomainResults merge = new MergeDomainResults(path);
-        merge.merge(br.edimarmanica.dataset.weir.Domain.BOOK);
+        merge.merge(br.edimarmanica.dataset.orion.Domain.DRIVER);
 
     }
 }

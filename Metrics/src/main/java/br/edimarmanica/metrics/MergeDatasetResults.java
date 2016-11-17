@@ -91,7 +91,8 @@ public class MergeDatasetResults {
     }
 
     public static void main(String[] args) {
-        String path = Paths.PATH_TEMPLATE_VARIATION_AUTO; // + "/limiar_x/";
+        //String path = Paths.PATH_TEMPLATE_VARIATION_AUTO + "/limiar_3.0/";
+        String path = Paths.PATH_INTRASITE;
 
 
         /*for (Dataset dataset : Dataset.values()) {
