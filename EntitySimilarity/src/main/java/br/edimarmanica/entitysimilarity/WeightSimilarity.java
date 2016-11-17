@@ -6,8 +6,6 @@ package br.edimarmanica.entitysimilarity;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +19,7 @@ public class WeightSimilarity extends NumberSimilarity {
      *
      * @param numericValue
      * @return
+     * @throws br.edimarmanica.entitysimilarity.NoiseException
      */
     @Override
     public Double normalize(String numericValue) throws NoiseException{
@@ -40,7 +39,7 @@ public class WeightSimilarity extends NumberSimilarity {
         try {
             return form01.parse(numericValue.replaceAll("(a-zA-Z)+", "")).doubleValue() * multipication;
         } catch (ParseException ex) {
-            Logger.getLogger(WeightSimilarity.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(WeightSimilarity.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
