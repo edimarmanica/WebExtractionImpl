@@ -5,8 +5,9 @@
 package br.edimarmanica.entitysimilarity;
 
 import com.wcohen.ss.BasicStringWrapperIterator;
-import com.wcohen.ss.UnsmoothedJS;
+import com.wcohen.ss.DirichletJS;
 import com.wcohen.ss.api.StringWrapper;
+import com.wcohen.ss.tokens.NGramTokenizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public class StringSimilarity extends TypeAwareSimilarity {
 
-    private UnsmoothedJS similarity;
+    private DirichletJS similarity;
 
     @Override
     public double similarity(Map<String, String> r1, Map<String, String> r2) throws InsufficientOverlapException {
@@ -37,7 +38,7 @@ public class StringSimilarity extends TypeAwareSimilarity {
      * @return
      */
     private void train(Map<String, String> r1, Map<String, String> r2) {
-        similarity = new UnsmoothedJS();
+        similarity = new DirichletJS(NGramTokenizer.DEFAULT_TOKENIZER, 1.0);
 
         /**
          * add the values of r1 and s1 to the corpus
