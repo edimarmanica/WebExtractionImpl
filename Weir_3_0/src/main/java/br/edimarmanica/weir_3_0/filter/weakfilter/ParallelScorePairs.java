@@ -20,13 +20,17 @@ import java.util.logging.Logger;
  */
 public class ParallelScorePairs {
 
-    private static final int NR_CORES = 4;
+    private static int NR_CORES = 4;
     private final List<Rule> rulesSite;
     private final List<Rule> rulesComparedSite;
 
     public ParallelScorePairs(List<Rule> rulesSite, List<Rule> rulesComparedSite) {
         this.rulesSite = rulesSite;
         this.rulesComparedSite = rulesComparedSite;
+        
+        if (rulesSite.size() < NR_CORES){
+            NR_CORES = rulesSite.size();
+        }
     }
 
     private List<ScoredPair> scorePairsIntraSite() {
@@ -73,6 +77,7 @@ public class ParallelScorePairs {
         Thread[] threads = new Thread[NR_CORES];
         ScorePairsInterSite[] sp = new ScorePairsInterSite[NR_CORES];
 
+        System.out.println("Size: "+rulesSite.size());
         int resto = rulesSite.size() % NR_CORES;
         int partes;
         if (resto == 0) {

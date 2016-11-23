@@ -152,7 +152,7 @@ public class WeakRulesFilter extends Filter {
 
     public static void main(String[] args) {
         General.DEBUG = true;
-        Site site = br.edimarmanica.dataset.orion.driver.Site.GPUPDATE;
+        Site site = br.edimarmanica.dataset.orion.driver.Site.CHAMP;
         String path = Paths.PATH_INTRASITE;
         WeakRulesFilter filter = new WeakRulesFilter(site, path, IdenticalValuesFilter.NAME);
         filter.execute();
