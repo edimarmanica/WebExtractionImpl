@@ -14,7 +14,7 @@ import java.io.File;
  */
 public enum Site implements br.edimarmanica.dataset.Site {
 
-    CHAMP("champ"), F1("f_1"), F3("f_3"), FTRUCK("f_truck"), GP2("gp_2"), GPUPDATE("gp_update"), INDYCAR("indycar"),  NASCAR("nascar"), STOCKCAR("stock_car"), WRC("wrc"),
+    F1("f_1"), F3("f_3"), GP2("gp_2"), GPUPDATE("gp_update"), INDYCAR("indycar"),  NASCAR("nascar"), STOCKCAR("stock_car"), 
     FORMULAE("formula_e"), SKY_SPORTS("sky_sports"), EURO_SPORTS("euro_sports");
     private String folderName;
 
