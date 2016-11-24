@@ -58,8 +58,7 @@ public class CurrencyDistance extends NumberDistance {
         try {
             return form01.parse(aux).doubleValue() * multiplication;
         } catch (ParseException ex) {
-            Logger.getLogger(CurrencyDistance.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            throw new NoiseException(numericValue, DataType.CURRENCY);
         }
     }
 }

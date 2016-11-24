@@ -39,8 +39,7 @@ public class WeightDistance extends NumberDistance {
         try {
             return form01.parse(numericValue.replaceAll("(a-zA-Z)+", "")).doubleValue() * multipication;
         } catch (ParseException ex) {
-            Logger.getLogger(WeightDistance.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            throw new NoiseException(numericValue, DataType.WEIGHT);
         }
     }
 }

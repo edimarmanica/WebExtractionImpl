@@ -15,7 +15,6 @@ import java.util.logging.Logger;
  */
 public class LenghtDistance extends NumberDistance {
 
-
     /**
      * standard unit = meters
      *
@@ -43,8 +42,7 @@ public class LenghtDistance extends NumberDistance {
         try {
             return form01.parse(numericValue.replaceAll("(a-zA-Z)+", "")).doubleValue() * multipication;
         } catch (ParseException ex) {
-            Logger.getLogger(LenghtDistance.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            throw new NoiseException(numericValue, DataType.LENGHT);
         }
     }
 }
