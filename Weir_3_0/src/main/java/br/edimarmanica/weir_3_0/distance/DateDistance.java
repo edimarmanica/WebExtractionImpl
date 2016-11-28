@@ -76,13 +76,13 @@ public class DateDistance extends TypeAwareDistance {
             return getAllFormats03(date);
         }
 
-        //05 Oct 1995 or 5 Oct 1995
+        //05 Oct 1995 or 5 Oct 1995  
         if (date.matches("\\d{1,2} [a-zA-Z]+ \\d{4}")) {
             return getAllFormats04(date);
         }
 
-        // "October 23, 1995" or "October 5, 1995"
-        if (date.matches("[a-zA-Z]+ \\d{1,2}, \\d{4}")) {
+        // "October 23, 1995" or "October 5, 1995" or "October 5 1995" or "Oct 5, 1995"
+        if (date.matches("[a-zA-Z]+ \\d{1,2},? \\d{4}")) {
             return getAllFormats05(date);
         }
 
@@ -90,7 +90,12 @@ public class DateDistance extends TypeAwareDistance {
         if (date.matches("[a-zA-Z]+ \\d{4}")) {
             return getAllFormats06(date);
         }
-
+        
+        // "19 October 1981 $LIXO$"
+        if (date.matches("\\d{1,2} [a-zA-Z]+ \\d{4}.*")) {
+            return getAllFormats07(date);
+        }
+        
         throw new NoiseException(date, DataType.DATE);
     }
 
@@ -188,7 +193,7 @@ public class DateDistance extends TypeAwareDistance {
     }
 
     /**
-     * Format: "October 23, 1995" or "October 5, 1995"
+     * Format: "October 23, 1995" or "October 5, 1995" or "October 5 1995" or "Oct 5 1995" or "Oct 5, 1995"
      *
      * @param date
      * @return
@@ -199,6 +204,12 @@ public class DateDistance extends TypeAwareDistance {
         String[] partes = date.trim().replaceAll(",", "").split(" ");
         for (int i = 0; i < months.length; i++) {
             if (partes[0].equals(months[i])) {
+                return getAllFormats01(Integer.valueOf(partes[2]) + "-" + (i + 1) + "-" + partes[1]);
+            }
+        }
+        
+        for (int i = 0; i < monthsAbrev.length; i++) {
+            if (partes[0].equals(monthsAbrev[i])) {
                 return getAllFormats01(Integer.valueOf(partes[2]) + "-" + (i + 1) + "-" + partes[1]);
             }
         }
@@ -219,6 +230,31 @@ public class DateDistance extends TypeAwareDistance {
         for (int i = 0; i < months.length; i++) {
             if (partes[0].equals(months[i])) {
                 return getAllFormats02(Integer.valueOf(partes[1]) + "-" + (i + 1));
+            }
+        }
+
+        throw new NoiseException(date, DataType.DATE);
+    }
+    
+     /**
+     * Formats: "19 October 1981 $LIXO$"
+     *
+     * @param date
+     * @return
+     */
+    private static List<String> getAllFormats07(String date) throws NoiseException {
+        List<String> allFormats = new ArrayList<>();
+
+        String[] partes = date.trim().split(" ");
+        for (int i = 0; i < monthsAbrev.length; i++) {
+            if (partes[1].equals(monthsAbrev[i])) {
+                return getAllFormats01(Integer.valueOf(partes[2]) + "-" + (i + 1) + "-" + partes[0]);
+            }
+        }
+
+        for (int i = 0; i < months.length; i++) {
+            if (partes[1].equals(months[i])) {
+                return getAllFormats01(Integer.valueOf(partes[2]) + "-" + (i + 1) + "-" + partes[0]);
             }
         }
 
