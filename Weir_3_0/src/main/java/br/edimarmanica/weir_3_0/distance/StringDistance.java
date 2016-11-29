@@ -53,7 +53,11 @@ public class StringDistance extends TypeAwareDistance {
              */
             if (v.getValue() != null && !normalize(v.getValue()).isEmpty()) {
                 list.add(distance.prepare("nulo"));
-                list.add(distance.prepare(normalize(v.getValue())));
+                try {
+                    list.add(distance.prepare(normalize(v.getValue())));
+                } catch (NullPointerException ex) {
+                    System.out.println("Problemas com: " + v.getValue() + " - " + normalize(v.getValue()));
+                }
             }
         }
 
@@ -65,12 +69,13 @@ public class StringDistance extends TypeAwareDistance {
              */
             if (v.getValue() != null && !normalize(v.getValue()).isEmpty()) {
                 list.add(distance.prepare("nulo"));
-                list.add(distance.prepare(normalize(v.getValue())));
+                try {
+                    list.add(distance.prepare(normalize(v.getValue())));
+                } catch (NullPointerException ex) {
+                    System.out.println("Problemas com: " + v.getValue() + " - " + normalize(v.getValue()));
+                }
             }
         }
-
-
-
 
         distance.train(new BasicStringWrapperIterator(list.iterator()));
     }
@@ -81,6 +86,6 @@ public class StringDistance extends TypeAwareDistance {
     }
 
     public String normalize(String st) {
-        return st.toLowerCase().trim().replaceAll("\\s+", "");
+        return st.toLowerCase().trim().replaceAll("\\s+", " ");
     }
 }
