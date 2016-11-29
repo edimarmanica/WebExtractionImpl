@@ -55,7 +55,7 @@ public class FiltersCheck {
             String filter = removedInFilter(rule);
             System.out.print(rule + ";" + filter + ";");
 
-            if (filter != null && filter.equals(WeakRulesFilter.NAME)) {
+            if (filter != null && (filter.equals(WeakRulesFilter.NAME) || filter.equals(IdenticalValuesFilter.NAME))) {
                 //se for no Weak, verifica qual das regras que ficaram que é sobreposta
                 Integer overlappedRule = overlappedFinalRule(rule);
                 System.out.print(overlappedRule);
@@ -143,7 +143,9 @@ public class FiltersCheck {
     }
 
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.orion.driver.Site.F1;
+        Site site = br.edimarmanica.dataset.orion.driver.Site.EURO_SPORTS;
+        
+        System.out.println("Site: "+site);
         String path = Paths.PATH_INTRASITE;
         FiltersCheck check = new FiltersCheck(site, path);
         check.execute();

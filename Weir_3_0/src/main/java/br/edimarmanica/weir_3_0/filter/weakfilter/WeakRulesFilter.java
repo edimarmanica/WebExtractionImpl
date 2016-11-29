@@ -6,11 +6,11 @@
 package br.edimarmanica.weir_3_0.filter.weakfilter;
 
 import br.edimarmanica.configuration.General;
+import br.edimarmanica.configuration.InterSite;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Site;
 import br.edimarmanica.weir_3_0.bean.Rule;
 import br.edimarmanica.weir_3_0.bean.ScoredPair;
-import br.edimarmanica.weir_3_0.distance.TypeAwareDistance;
 import br.edimarmanica.weir_3_0.filter.Filter;
 import br.edimarmanica.weir_3_0.filter.IdenticalValuesFilter;
 import br.edimarmanica.weir_3_0.util.Conjuntos;
@@ -18,7 +18,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +28,7 @@ import java.util.logging.Logger;
  * Remove as regras fracas No nosso caso só compara com as regras do próprio
  * site e as regras do GP_UPDATE (pq ele que tem as entidades compartilhadas) Já
  * tem que ter aplicado os outros filtros tanto no site atual quando no
- * GP_UPDATE OBS: quando o site alvo é o GP_UPDATE o outro site é o F1
+ * GP_UPDATE OBS: quando o site alvo é o GP_UPDATE o outro site é o F3
  *
  * @author edimar
  */
@@ -46,7 +45,7 @@ public class WeakRulesFilter extends Filter {
         this.lastFilter = lastFilter;
 
         if (site == br.edimarmanica.dataset.orion.driver.Site.GPUPDATE) {
-            comparedSite = br.edimarmanica.dataset.orion.driver.Site.F1;
+            comparedSite = br.edimarmanica.dataset.orion.driver.Site.F3;
         } else {
             comparedSite = br.edimarmanica.dataset.orion.driver.Site.GPUPDATE;
         }
@@ -152,8 +151,8 @@ public class WeakRulesFilter extends Filter {
 
     public static void main(String[] args) {
         General.DEBUG = true;
-        Site site = br.edimarmanica.dataset.orion.driver.Site.CHAMP;
-        String path = Paths.PATH_INTRASITE;
+        Site site = br.edimarmanica.dataset.orion.driver.Site.F1;
+        String path = Paths.PATH_WEIR+"/shared_"+InterSite.MIN_SHARED_ENTITIES;
         WeakRulesFilter filter = new WeakRulesFilter(site, path, IdenticalValuesFilter.NAME);
         filter.execute();
 

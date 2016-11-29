@@ -5,6 +5,7 @@
 package br.edimarmanica.weir_3_0.integration;
 
 import br.edimarmanica.configuration.General;
+import br.edimarmanica.configuration.InterSite;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
@@ -16,7 +17,6 @@ import static br.edimarmanica.weir_3_0.filter.Filter.HEADER;
 import br.edimarmanica.weir_3_0.filter.weakfilter.WeakRulesFilter;
 import br.edimarmanica.weir_3_0.load.LoadRules;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -86,7 +86,7 @@ public class Weir {
     }
 
     /**
-     * Calcula os escores entre as regras do GP_UPDATE com as dos outros sites
+     * Calcula os escores entre as regras de todos os sites
      *
      * @param rulesSite
      * @param rulesComparedSite
@@ -294,14 +294,14 @@ public class Weir {
             try (CSVPrinter csvFilePrinter = new CSVPrinter(out, CSVFormat.EXCEL.withHeader(header))) {
                 int i = 0;
                 for (Mapping map : mappings) {
-                    if (map.getRules().size() < 5) {
+                    if (map.getRules().size() < 2) {
                         continue;
                     }
 
                     for (Rule rule : map.getRules()) {
                         List<String> dataRecord = new ArrayList<>();
                         dataRecord.add(i + "");
-                        dataRecord.add(rule.getSite().getFolderName());
+                        dataRecord.add(rule.getSite().toString());
                         dataRecord.add(rule.getRuleID() + "");
                         csvFilePrinter.printRecord(dataRecord);
                     }
@@ -325,7 +325,7 @@ public class Weir {
     public static void main(String[] args) {
         General.DEBUG = true;
         Domain domain = br.edimarmanica.dataset.orion.Domain.DRIVER;
-        String path = Paths.PATH_INTRASITE;
+        String path = Paths.PATH_WEIR+"/shared_"+InterSite.MIN_SHARED_ENTITIES;
         String lastFilter = WeakRulesFilter.NAME;
         Weir weir = new Weir(domain, path, lastFilter);
         weir.execute();

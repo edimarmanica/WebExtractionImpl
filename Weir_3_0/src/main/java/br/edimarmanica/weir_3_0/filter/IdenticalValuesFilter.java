@@ -6,10 +6,10 @@
 package br.edimarmanica.weir_3_0.filter;
 
 import br.edimarmanica.configuration.General;
+import br.edimarmanica.configuration.InterSite;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Site;
 import br.edimarmanica.weir_3_0.bean.Rule;
-import br.edimarmanica.weir_3_0.bean.Value;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -66,7 +66,7 @@ public class IdenticalValuesFilter extends Filter {
     public static void main(String[] args) {
         General.DEBUG = true;
         Site site = br.edimarmanica.dataset.orion.driver.Site.GPUPDATE;
-        String path = Paths.PATH_INTRASITE;
+        String path = Paths.PATH_WEIR+"/shared_"+InterSite.MIN_SHARED_ENTITIES;
         IdenticalValuesFilter filter = new IdenticalValuesFilter(site, path, NullValuesFilter.NAME);
         filter.execute();
     }

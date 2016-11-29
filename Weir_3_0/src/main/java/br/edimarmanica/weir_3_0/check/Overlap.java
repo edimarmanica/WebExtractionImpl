@@ -43,6 +43,7 @@ public class Overlap {
             for (Value v2 : rule2.getValues()) {
                 if (v1.getEntityID().equals(v2.getEntityID())) {
                     System.out.println(v1.getEntityID() + ";" + v1.getValue() + ";" + v2.getValue() + "]");
+                    System.out.println(v1.getPageID()+" X "+v2.getPageID());
                 }
             }
         }
@@ -61,10 +62,10 @@ public class Overlap {
     }
 
     public static void main(String[] args) {
-        Site site1 = br.edimarmanica.dataset.orion.driver.Site.F1;
-        int r1 = 4;
+        Site site1 = br.edimarmanica.dataset.orion.driver.Site.GP2;
+        int r1 = 140;
         Site site2 = br.edimarmanica.dataset.orion.driver.Site.GPUPDATE;
-        int r2 = 5605;
+        int r2 = 3575;
 
         Overlap overlap = new Overlap(r1, r2, site1, site2);
         overlap.print();

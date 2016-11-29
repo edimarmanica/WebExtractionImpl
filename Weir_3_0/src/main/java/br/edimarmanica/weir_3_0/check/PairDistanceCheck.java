@@ -51,14 +51,12 @@ public class PairDistanceCheck {
     }
 
     public static void main(String[] args) {
-        Site siteR1 = br.edimarmanica.dataset.orion.driver.Site.F1;
-        int r1 = 43;
-        Site siteR2 = br.edimarmanica.dataset.orion.driver.Site.GPUPDATE;
-        int r2 = 4932;
-        //F1_r4 X GP_r5605 = 0,85
-        // F143 X GP_r4932 = 0,3529
+         Site site1 = br.edimarmanica.dataset.orion.driver.Site.GP2;
+        int r1 = 140;
+        Site site2 = br.edimarmanica.dataset.orion.driver.Site.GPUPDATE;
+        int r2 = 3575;
 
-        PairDistanceCheck check = new PairDistanceCheck(r1, r2, siteR1, siteR2);
+        PairDistanceCheck check = new PairDistanceCheck(r1, r2, site1, site2);
         check.printDistance();
     }
 }

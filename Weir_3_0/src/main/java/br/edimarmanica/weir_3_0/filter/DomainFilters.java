@@ -7,6 +7,7 @@ package br.edimarmanica.weir_3_0.filter;
 
 import br.edimarmanica.weir_3_0.filter.weakfilter.WeakRulesFilter;
 import br.edimarmanica.configuration.General;
+import br.edimarmanica.configuration.InterSite;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
@@ -62,7 +63,7 @@ public class DomainFilters {
     public static void main(String[] args) {
         General.DEBUG = true;
         Domain domain = br.edimarmanica.dataset.orion.Domain.DRIVER;
-        String path = Paths.PATH_INTRASITE;
+        String path = Paths.PATH_WEIR+"/shared_"+InterSite.MIN_SHARED_ENTITIES;
         DomainFilters filters = new DomainFilters(domain, path);
         //filters.executeIntraSiteFilters();
         filters.executeInterSiteFilters();

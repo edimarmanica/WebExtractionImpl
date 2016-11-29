@@ -61,9 +61,9 @@ public class IntersectionCheck {
     }
 
     public static void main(String[] args) {
-        Site site = br.edimarmanica.dataset.orion.driver.Site.F1;
-        int r1 = 4;
-        int r2 = 43;
+        Site site = br.edimarmanica.dataset.orion.driver.Site.FORMULAE;
+        int r1 = 6;
+        int r2 = 0;
 
         IntersectionCheck check = new IntersectionCheck(r1, r2, site);
         check.print();

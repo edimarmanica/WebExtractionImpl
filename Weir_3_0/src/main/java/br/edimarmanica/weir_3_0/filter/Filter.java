@@ -75,7 +75,9 @@ public abstract class Filter {
      * @param keptRules regras mantidas após o filtro atual
      */
     protected void persiste(Set<Integer> keptRules) {
-        File file = new File(path+"/"+site.getPath()+"/"+getFilterName()+".csv");
+        File dir = new File(path+"/"+site.getPath()+"/");
+        dir.mkdirs();
+        File file = new File(dir.getAbsolutePath()+"/"+getFilterName()+".csv");
         CSVFormat format = CSVFormat.EXCEL.withHeader(HEADER);
 
         try (Writer out = new FileWriter(file)) {

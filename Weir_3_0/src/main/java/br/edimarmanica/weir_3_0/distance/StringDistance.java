@@ -51,7 +51,7 @@ public class StringDistance extends TypeAwareDistance {
              * next duas vezes. Desta forma ele sempre perde os valores da
              * posição par. Lembrando que índice começa em zero
              */
-            if (v.getValue() != null) {
+            if (v.getValue() != null && !normalize(v.getValue()).isEmpty()) {
                 list.add(distance.prepare("nulo"));
                 list.add(distance.prepare(normalize(v.getValue())));
             }
@@ -63,7 +63,7 @@ public class StringDistance extends TypeAwareDistance {
              * next duas vezes. Desta forma ele sempre perde os valores da
              * posição par. Lembrando que índice começa em zero
              */
-            if (v.getValue() != null) {
+            if (v.getValue() != null && !normalize(v.getValue()).isEmpty()) {
                 list.add(distance.prepare("nulo"));
                 list.add(distance.prepare(normalize(v.getValue())));
             }
