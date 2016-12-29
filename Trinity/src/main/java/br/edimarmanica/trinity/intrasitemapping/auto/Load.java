@@ -71,9 +71,9 @@ public class Load {
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(br.edimarmanica.trinity.intrasitemapping.manual.Mapping.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(br.edimarmanica.trinity.intrasitemapping.manual.Mapping.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return offset;

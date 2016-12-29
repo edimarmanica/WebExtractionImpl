@@ -10,8 +10,6 @@ import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Dataset;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
-import br.edimarmanica.metrics.Printer;
-import static br.edimarmanica.trinity.intrasitemapping.manual.OffsetToRule.HEADER;
 import br.edimarmanica.trinity.util.FileUtils;
 import java.io.File;
 import java.io.FileWriter;

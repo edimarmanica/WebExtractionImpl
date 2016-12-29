@@ -1,4 +1,8 @@
 
+import br.edimarmanica.configuration.Paths;
+import br.edimarmanica.dataset.Site;
+
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,6 +19,8 @@ public class Teste {
         String st = "Comedy|Cri25me|Dra,ma|Thr.il$ler";
         System.out.println(st.replaceAll("[^(a-zA-Z)\\d\\.]", ""));
         System.out.println("aki");
+        Site site = br.edimarmanica.dataset.swde.book.Site.ADEBOOKS;
+        System.out.println(Paths.PATH_BASE+site.getPath());
 
     }
 }

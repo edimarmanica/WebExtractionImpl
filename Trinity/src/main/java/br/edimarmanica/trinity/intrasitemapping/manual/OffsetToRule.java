@@ -158,15 +158,15 @@ public class OffsetToRule {
             System.out.println("Dataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
 
-                if (domain != br.edimarmanica.dataset.weir.Domain.VIDEOGAME) {
+                /*if (domain != br.edimarmanica.dataset.weir.Domain.VIDEOGAME) {
                     continue;
-                }
+                }*/
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {
 
-                   /* if (site != br.edimarmanica.dataset.swde.university.Site.COLLEGEBOARD) {
+                    if (site != br.edimarmanica.dataset.swde.auto.Site.AOL) {
                         continue;
-                    }*/
+                    }
                     try {
                         System.out.println("\t\tSite: " + site);
                         OffsetToRule am = new OffsetToRule(site);

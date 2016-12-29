@@ -9,7 +9,6 @@ import br.edimarmanica.configuration.General;
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Domain;
 import br.edimarmanica.dataset.Site;
-import br.edimarmanica.trinity.extract.timeout.ExtractTimeout;
 import gnu.regexp.REException;
 import java.io.File;
 import java.io.IOException;
@@ -92,15 +91,16 @@ public class ExtractDirectInTree extends Extract {
     public static void main(String[] args) {
         //configurar essa opção (-Xss40m) da VM para não dar stackoverflow 
         General.DEBUG = true;
-        Extract.WINDOW_SIZE = 6;
-        Paths.PATH_TRINITY = Paths.PATH_TRINITY+"/ved_w"+(Extract.WINDOW_SIZE - Extract.NR_SHARED_PAGES);
-        
-        Domain domain = br.edimarmanica.dataset.weir.Domain.SOCCER;
+        Extract.WINDOW_SIZE = 30;
+        //Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/ved_w" + (Extract.WINDOW_SIZE - Extract.NR_SHARED_PAGES);
+        Paths.PATH_TRINITY = "/media/edimar/Dados/doutorado04/bases/ORION/driver/groundtruth/";
+
+        Domain domain = br.edimarmanica.dataset.orion.Domain.DRIVER;
         for (Site site : domain.getSites()) {
 
-            if (site != br.edimarmanica.dataset.weir.soccer.Site.FOOTBALL) {
+           /* if (site != br.edimarmanica.dataset.orion.driver.Site.CHAMP) {
                 continue;
-            }
+            }*/
             System.out.println("Site: " + site);
             Extract run = new ExtractDirectInTree(site);
             try {

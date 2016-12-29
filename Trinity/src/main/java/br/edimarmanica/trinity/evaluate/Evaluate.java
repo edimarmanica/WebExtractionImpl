@@ -73,10 +73,8 @@ public class Evaluate {
     }
 
     public void printMetrics() {
-
         Results results = new Results(site);
         myResults = results.loadAllRules(Paths.PATH_TRINITY);
-
         printer = new Printer(site, Paths.PATH_TRINITY);
 
         for (Attribute attr : site.getDomain().getAttributes()) {
@@ -89,14 +87,18 @@ public class Evaluate {
     }
 
     public static void main(String[] args) {
-        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/ved_w1_auto/";
+        Paths.PATH_TRINITY = Paths.PATH_TRINITY + "/vre_w5/";
 
         for (Dataset dataset : Dataset.values()) {
+            if(dataset == Dataset.ORION){
+                continue;
+            }
+            
             System.out.println("\tDataset: " + dataset);
             for (Domain domain : dataset.getDomains()) {
-               /* if (domain != br.edimarmanica.dataset.swde.Domain.AUTO) {
+                if (domain != br.edimarmanica.dataset.weir.Domain.BOOK) {
                     continue;
-                }*/
+                }
 
                 System.out.println("\tDomain: " + domain);
                 for (Site site : domain.getSites()) {

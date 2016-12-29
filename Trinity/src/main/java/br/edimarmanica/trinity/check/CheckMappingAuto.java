@@ -7,14 +7,12 @@ package br.edimarmanica.trinity.check;
 
 import br.edimarmanica.configuration.Paths;
 import br.edimarmanica.dataset.Site;
-import br.edimarmanica.trinity.intrasitemapping.manual.OffsetToRule;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.csv.CSVFormat;
