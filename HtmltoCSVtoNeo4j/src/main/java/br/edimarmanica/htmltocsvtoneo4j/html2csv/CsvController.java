@@ -28,7 +28,7 @@ public class CsvController {
     private final Site site;
     private boolean appendNodes = false;
     private boolean appendRel = false;
-    private final String[] HEADER_NODES = {"nodeId:ID(Node)","VALUE", "NODE_TYPE", "PATH", "UNIQUE_PATH", "URL", "POSITION"};
+    private final String[] HEADER_NODES = {"nodeId:ID(Node)","VALUE", "NODE_TYPE:int", "PATH", "UNIQUE_PATH", "URL", "POSITION:int"};
     private final String[] HEADER_REL = {":START_ID(Node)", ":END_ID(Node)"};
     private final static String NODE_FILE_NAME = "nodes.csv";
     private final static String REL_FILE_NAME = "rels.csv";

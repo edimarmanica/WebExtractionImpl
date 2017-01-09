@@ -131,11 +131,11 @@ public class HtmlToCSV {
 
         String formattedUniquePath = formatter.format(node.getUniquePath(), node.getNodeType());
 
-        properties.put("NODE_TYPE", node.getNodeType() + "");
+        properties.put("NODE_TYPE:int", node.getNodeType() + "");
         properties.put("PATH", node.getPath());
         properties.put("UNIQUE_PATH", formattedUniquePath);
         properties.put("URL", pageURL);
-        properties.put("POSITION", FormatUniquePath.getNodePosition(formattedUniquePath) + "");
+        properties.put("POSITION:int", FormatUniquePath.getNodePosition(formattedUniquePath) + "");
 
         long newNodeID = currentNodeID;
         currentNodeID++;
@@ -163,7 +163,7 @@ public class HtmlToCSV {
     }
 
     public static void main(String[] args) {
-        HtmlToCSV html = new HtmlToCSV("/media/edimar/Dados/doutorado04/bases/ORION/driver/champ/586410.html", br.edimarmanica.dataset.orion.driver.Site.CHAMP, 0, false);
+        HtmlToCSV html = new HtmlToCSV("/media/edimar/Dados/doutorado04/bases/ORION/driver/champ/586410.html", br.edimarmanica.dataset.orion.driver.Site.F1, 0, false);
         html.insertAllNodes();
     }
 }
